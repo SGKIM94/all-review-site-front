@@ -120,6 +120,12 @@
           }
         }
       }
-    }},
-  "defaultProject": "all-reivew-site-front"
+    }
+  },
+  "defaultProject": "all-reivew-site-front",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
