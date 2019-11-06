@@ -5,17 +5,17 @@ import { takeUntil } from 'rxjs/operators';
 import * as $ from 'jquery';
 
 
-import { FuseConfigService } from '@fuse/services/config.service';
-import { fuseAnimations } from '@fuse/animations/index';
+import { FuseConfigService } from '../../@fuse/services/config.service';
+import { fuseAnimations } from '../../@fuse/animations';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector   : 'login',
   templateUrl: './login.component.html',
   styleUrls  : ['./login.component.scss'],
   animations : fuseAnimations
 })
-export class LoginComponent implements OnInit, OnDestroy
-{
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loginFormErrors: any;
 
@@ -28,11 +28,10 @@ export class LoginComponent implements OnInit, OnDestroy
    * @param {FuseConfigService} _fuseConfigService
    * @param {FormBuilder} _formBuilder
    */
-  constructor(
+  constructor (
       private _fuseConfigService: FuseConfigService,
       private _formBuilder: FormBuilder
-  )
-  {
+  ) {
     this.openMenu();
     // Configure the layout
     this._fuseConfigService.config = {
@@ -66,8 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy
   /**
    * On init
    */
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
       email   : ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -83,8 +81,7 @@ export class LoginComponent implements OnInit, OnDestroy
   /**
    * On destroy
    */
-  ngOnDestroy(): void
-  {
+  ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
@@ -97,12 +94,9 @@ export class LoginComponent implements OnInit, OnDestroy
   /**
    * On form values changed
    */
-  onLoginFormValuesChanged(): void
-  {
-    for ( const field in this.loginFormErrors )
-    {
-      if ( !this.loginFormErrors.hasOwnProperty(field) )
-      {
+  onLoginFormValuesChanged(): void {
+    for ( const field in this.loginFormErrors ) {
+      if ( !this.loginFormErrors.hasOwnProperty(field) ) {
         continue;
       }
 
@@ -119,10 +113,10 @@ export class LoginComponent implements OnInit, OnDestroy
     }
   }
 
-  onSubmit(){
+  onSubmit() {
   }
 
-  openMenu(){
+  openMenu() {
     $('body').addClass('noScroll');
     if ($('.collapse').hasClass('collapse-active')) {
       $('.collapse').removeClass('collapse-active');
