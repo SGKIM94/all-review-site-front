@@ -19,10 +19,6 @@ input, input[type=submit], textarea {
   outline: 0
 }
 
-//input:focus, textarea:focus {
-////    box-shadow: 0 0 0 .2rem rgba(227, 227, 227, .5) !important
-//}
-
 input[type=submit]:focus {
   box-shadow: none !important
 }
@@ -108,7 +104,6 @@ input[type=submit]:focus {
 
 .cms-main .faqs .panel-group .panel-default .panel-heading .panel-title a span.glyphicon-plus {
   border: 2px solid #c9c9c9;
-  //background: url(../../images/add.png) center no-repeat;
   width: 35px;
   height: 35px;
   display: inline-block;
@@ -119,7 +114,6 @@ input[type=submit]:focus {
 }
 
 .cms-main .faqs .panel-group .panel-default .panel-heading .panel-title a span.glyphicon-minus {
-  //background: url(../../images/remove.png) center no-repeat #9f366e;
   width: 35px;
   height: 35px;
   display: inline-block;
