@@ -95,19 +95,16 @@ export class LoginComponent implements OnInit, OnDestroy {
    * On form values changed
    */
   onLoginFormValuesChanged(): void {
-    for ( const field in this.loginFormErrors ) {
-      if ( !this.loginFormErrors.hasOwnProperty(field) ) {
+    for (const field in this.loginFormErrors) {
+      if (!this.loginFormErrors.hasOwnProperty(field)) {
         continue;
       }
 
-      // Clear previous errors
       this.loginFormErrors[field] = {};
 
-      // Get the control
       const control = this.loginForm.get(field);
 
-      if ( control && control.dirty && !control.valid )
-      {
+      if (control && control.dirty && !control.valid) {
         this.loginFormErrors[field] = control.errors;
       }
     }
@@ -118,11 +115,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   openMenu() {
     $('body').addClass('noScroll');
+
     if ($('.collapse').hasClass('collapse-active')) {
-      $('.collapse').removeClass('collapse-active');
+        $('.collapse').removeClass('collapse-active');
+        return;
     }
-    else {
-      $('.collapse').addClass('collapse-active');
-    }
+
+    $('.collapse').addClass('collapse-active');
   }
 }
