@@ -9,6 +9,7 @@ import { QuestionComponent } from './question/question.component';
 import { AnswerComponent } from './answer/answer.component';
 import { RegisterComponent } from './register/register.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     ProfileComponent,
     QuestionComponent,
     AnswerComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent
   ],
     imports: [
         BrowserModule,
