@@ -10,6 +10,7 @@ import { AnswerComponent } from './answer/answer.component';
 import { RegisterComponent } from './register/register.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './home/home.component';
+import { HomebaseComponent } from './homebase/homebase.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HomeComponent } from './home/home.component';
     QuestionComponent,
     AnswerComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    HomebaseComponent
   ],
     imports: [
         BrowserModule,
