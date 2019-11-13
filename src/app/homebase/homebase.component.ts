@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {interval, Subject} from 'rxjs';
+import {config, interval, Subject} from 'rxjs';
 import {colorSets} from '@swimlane/ngx-charts/release/utils';
-import {map} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {IImage} from 'ng-simple-slideshow';
 import {DOCUMENT} from '@angular/common';
 import {FuseConfigService} from '../../@fuse/services/config.service';
@@ -67,20 +67,12 @@ export class HomebaseComponent implements OnInit {
               private _translateService: TranslateService,
               private _platform: Platform){
     this.openMenu();
-
-
     this.navigation = navigation;
-
     this._fuseNavigationService.register('main', this.navigation);
-
     this._fuseNavigationService.setCurrentNavigation('main');
-
     this._translateService.addLangs(['en', 'tr']);
-
     this._translateService.setDefaultLang('en');
-
     this._fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
-
     this._translateService.use('en');
 
     if (this._platform.ANDROID || this._platform.IOS) {
@@ -91,10 +83,55 @@ export class HomebaseComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void{
+    this._fuseConfigService.config
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((config) => {
+          this.fuseConfig = config;
+
+          this.changeBoxedClassToLayoutWidth();
+          this.removeClassListWhenContainTheme();
+
+          this.document.body.classList.add(this.fuseConfig.colorTheme);
+    });
   }
 
-  private openMenu() {
+  removeClassListWhenContainTheme = () => {
+    const thisObject = this;
+    this.document.body.classList.map((item) => {
+      if (item.startsWith('theme-')) {
+        thisObject.document.body.classList.remove(item);
+      }
+    });
+  }
 
+  changeBoxedClassToLayoutWidth = () => {
+    if (this.fuseConfig.layout.width === 'boxed') {
+      this.document.body.classList.add('boxed');
+      return;
+    }
+
+    this.document.body.classList.remove('boxed');
+  }
+
+
+  ngOnDestroy = () => {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
+  private openMenu = () => {
+    this.document.body.classList.add('noScroll');
+
+    this.addCollapseActiveClassWithout();
+  }
+
+  private addCollapseActiveClassWithout = () => {
+    const collapseElement = this.document.getElementById('collapse');
+    if (collapseElement.classList.contains('collapse-active')) {
+      collapseElement.classList.remove('collapse-active');
+    }
+
+    collapseElement.classList.add('collapse-active');
   }
 }
