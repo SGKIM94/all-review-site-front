@@ -10,9 +10,8 @@ import { AnswerComponent } from './answer/answer.component';
 import { RegisterComponent } from './register/register.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './home/home.component';
-import { HomebaseComponent } from './homebase/homebase.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
-import { RegisterNewComponent } from './register-new/register-new.component';
+import {MatFormFieldModule} from '@angular/material/typings/esm5/form-field';
 
 @NgModule({
   declarations: [
@@ -23,14 +22,13 @@ import { RegisterNewComponent } from './register-new/register-new.component';
     AnswerComponent,
     RegisterComponent,
     HomeComponent,
-    HomebaseComponent,
-    RegisterNewComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        SlideshowModule
+        SlideshowModule,
+        MatFormFieldModule
     ],
   providers: [],
   bootstrap: [AppComponent]

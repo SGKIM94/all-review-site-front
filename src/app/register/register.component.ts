@@ -1,78 +1,64 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as $ from 'jquery';
-
-
-import { FuseConfigService } from '@fuse/services/config.service';
-import { fuseAnimations } from '@fuse/animations/index';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/internal/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {fuseAnimations} from '../../@fuse/animations';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {FuseConfigService} from '../../@fuse/services/config.service';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
-  selector   : 'register',
+  selector: 'app-register-new',
   templateUrl: './register.component.html',
-  styleUrls  : ['./register.component.scss'],
+  styleUrls: ['./register.component.scss'],
   animations : fuseAnimations
 })
-export class RegisterComponent implements OnInit, OnDestroy
-{
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   registerFormErrors: any;
 
-  // Private
   private _unsubscribeAll: Subject<any>;
 
   constructor(
       private _fuseConfigService: FuseConfigService,
-      private _formBuilder: FormBuilder,
-
-  )
-  {
+      private _formBuilder: FormBuilder) {
     this.openMenu();
-    // Configure the layout
+    this.setFuseConfig();
+    this.initializeRegisterErrors();
+
+  }
+
+  private initializeRegisterErrors = () => {
+    this.registerFormErrors = {
+      name: {},
+      phone: {},
+      mobile: {},
+      password: {},
+      passwordConfirm: {},
+    };
+  }
+
+  private setFuseConfig = () => {
     this._fuseConfigService.config = {
       layout: {
-        navbar : {
+        navbar: {
           hidden: true
         },
         toolbar: {
           hidden: true
         },
-        footer : {
+        footer: {
           hidden: true
         }
       }
     };
-
-    // Set the defaults
-    this.registerFormErrors = {
-      name           : {},
-      email          : {},
-      mobile         : {},
-      password       : {},
-      passwordConfirm: {}
-    };
-
-    // Set the private defaults
-    this._unsubscribeAll = new Subject();
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On init
-   */
-  ngOnInit(): void
-  {
-
+  ngOnInit(): void {
     this.registerForm = this._formBuilder.group({
-      name           : ['', Validators.required],
-      email          : ['', [Validators.required, Validators.email]],
-      mobile         : ['', [Validators.required,Validators.pattern(/^\+?\d{10}$/)]],
-      password       : ['', [Validators.required, Validators.minLength(6)]],
-      passwordConfirm: ['', [Validators.required, confirmPassword]]
+      name : ['', Validators.required],
+      email : ['', [Validators.required, Validators.email]],
+      mobile : ['', [Validators.required, Validators.pattern(/^\+?\d{10}$/)]],
+      password : ['', [Validators.required, Validators.minLength(6)]],
+      passwordConfirm : ['', [Validators.required, confirmPassword]]
     });
 
     this.registerForm.valueChanges
@@ -82,91 +68,71 @@ export class RegisterComponent implements OnInit, OnDestroy
         });
   }
 
-  /**
-   * On destroy
-   */
-  ngOnDestroy(): void
-  {
-    // Unsubscribe from all subscriptions
+  onRegisterFormValuesChanged = () => {
+    this.registerFormErrors.map((field) => {
+      const control = this.registerFormErrors.get(field);
+
+      this.checkFieldError(control, field);
+    });
+  }
+
+  private checkFieldError = (control, field) => {
+    if (control && control.dirty && !control.valid) {
+      this.registerFormErrors[field] = control.errors;
+    }
+  }
+
+  ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
 
-  openMenu(){
-    $('body').removeClass('noScroll');
-    if ($('.collapse').hasClass('collapse-active')) {
-      $('.collapse').removeClass('collapse-active');
-    }
-    else {
-      $('.collapse').addClass('collapse-active');
-    }
+  openMenu = () => {
+    this.addCollapseActiveClassWithout();
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On form values changed
-   */
-  onRegisterFormValuesChanged(): void
-  {
-    for ( const field in this.registerFormErrors )
-    {
-      if ( !this.registerFormErrors.hasOwnProperty(field) )
-      {
-        continue;
-      }
-
-      // Clear previous errors
-      this.registerFormErrors[field] = {};
-
-      // Get the control
-      const control = this.registerForm.get(field);
-
-      if ( control && control.dirty && !control.valid )
-      {
-        this.registerFormErrors[field] = control.errors;
-      }
+  private addCollapseActiveClassWithout = () => {
+    const collapseElement = document.getElementById('collapse');
+    if (collapseElement.classList.contains('collapse-active')) {
+      collapseElement.classList.remove('collapse-active');
     }
+
+    collapseElement.classList.add('collapse-active');
   }
-
-  onSubmit(){
-  }
-
-
 }
 
-/**
- * Confirm password
- *
- * @param {AbstractControl} control
- * @returns {{passwordsNotMatch: boolean}}
- */
-function confirmPassword(control: AbstractControl): any
-{
-  if ( !control.parent || !control )
-  {
+function confirmPassword(control: AbstractControl): any {
+  if (isControlEmpty(control)) {
     return;
   }
 
-  const password = control.parent.get('password');
-  const passwordConfirm = control.parent.get('passwordConfirm');
+  const parentControl = control.parent;
+  const password = parentControl.get('password');
+  const passwordConfirm = parentControl.get('passwordConfirm');
 
-  if ( !password || !passwordConfirm )
-  {
+  if (isPasswordAndPasswordConfirmEmpty(password, passwordConfirm)) {
     return;
   }
 
-  if ( passwordConfirm.value === '' )
-  {
-    return;
-  }
-
-  if ( password.value !== passwordConfirm.value )
-  {
+  if (isMatchPasswordWithPasswordConfirm(password, passwordConfirm)) {
     return {
-      passwordsNotMatch: true
+      passwordNotMatch: true
     };
   }
+
+  return {
+    passwordNotMatch: false
+  };
+}
+
+function isControlEmpty(control: AbstractControl): boolean {
+  return !control.parent || !control;
+}
+
+function isPasswordAndPasswordConfirmEmpty(password, passwordConfirm): boolean {
+  return !passwordConfirm || !password || passwordConfirm.value === '';
+}
+
+function isMatchPasswordWithPasswordConfirm(password, passwordConfirm): boolean {
+  return password.value !== passwordConfirm.value;
 }
