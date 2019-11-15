@@ -12,6 +12,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {MatFormFieldModule} from '@angular/material/typings/esm5/form-field';
+import {FlexModule} from '@angular/flex-layout/typings/esm5/flex';
+import {MatButtonModule} from '@angular/material/typings/button';
+import {MatInputModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import {MatFormFieldModule} from '@angular/material/typings/esm5/form-field';
         AppRoutingModule,
         ReactiveFormsModule,
         SlideshowModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        FlexModule,
+        MatButtonModule,
+        MatInputModule
     ],
   providers: [],
   bootstrap: [AppComponent]
