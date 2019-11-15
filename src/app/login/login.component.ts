@@ -1,73 +1,73 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import * as $ from 'jquery';
-
-
-import { FuseConfigService } from '../../@fuse/services/config.service';
-import { fuseAnimations } from '../../@fuse/animations';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {fuseAnimations} from '../../@fuse/animations';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {FuseConfigService} from '../../@fuse/services/config.service';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector   : 'login',
+  selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls  : ['./login.component.scss'],
+  styleUrls: ['./login.component.scss'],
   animations : fuseAnimations
 })
+
 export class LoginComponent implements OnInit, OnDestroy {
+
   loginForm: FormGroup;
   loginFormErrors: any;
 
-  // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {FuseConfigService} _fuseConfigService
-   * @param {FormBuilder} _formBuilder
-   */
-  constructor (
+  constructor(
       private _fuseConfigService: FuseConfigService,
-      private _formBuilder: FormBuilder
-  ) {
+      private _formBuilder: FormBuilder) {
+
     this.openMenu();
-    // Configure the layout
+
+    this.setFuseConfig();
+
+
+    this.loginFormErrors = {
+      email: {},
+      password: {}
+    };
+
+    this._unsubscribeAll = new Subject();
+  }
+
+  private setFuseConfig = () => {
     this._fuseConfigService.config = {
       layout: {
-        navbar : {
+        navbar: {
           hidden: true
         },
         toolbar: {
           hidden: true
         },
-        footer : {
+        footer: {
           hidden: true
         }
       }
     };
-
-    // Set the defaults
-    this.loginFormErrors = {
-      email   : {},
-      password: {}
-    };
-
-    // Set the private defaults
-    this._unsubscribeAll = new Subject();
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
+  openMenu = () => {
+    this.addCollapseActiveClassWithout();
+  }
 
-  /**
-   * On init
-   */
+  private addCollapseActiveClassWithout = () => {
+    const collapseElement = document.getElementById('collapse');
+    if (collapseElement.classList.contains('collapse-active')) {
+      collapseElement.classList.remove('collapse-active');
+    }
+
+    collapseElement.classList.add('collapse-active');
+  }
+
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
-      email   : ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
 
@@ -78,49 +78,25 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
   }
 
-  /**
-   * On destroy
-   */
+
+  onLoginFormValuesChanged = () => {
+    this.loginFormErrors.map((field) => {
+      const control = this.loginFormErrors.get(field);
+
+      this.checkFieldError(control, field);
+    });
+  }
+
+  private checkFieldError = (control, field) => {
+    if (control && control.dirty && !control.valid) {
+      this.loginFormErrors[field] = control.errors;
+    }
+  }
+
+
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On form values changed
-   */
-  onLoginFormValuesChanged(): void {
-    for (const field in this.loginFormErrors) {
-      if (!this.loginFormErrors.hasOwnProperty(field)) {
-        continue;
-      }
-
-      this.loginFormErrors[field] = {};
-
-      const control = this.loginForm.get(field);
-
-      if (control && control.dirty && !control.valid) {
-        this.loginFormErrors[field] = control.errors;
-      }
-    }
-  }
-
-  onSubmit() {
-  }
-
-  openMenu() {
-    $('body').addClass('noScroll');
-
-    if ($('.collapse').hasClass('collapse-active')) {
-        $('.collapse').removeClass('collapse-active');
-        return;
-    }
-
-    $('.collapse').addClass('collapse-active');
-  }
 }
