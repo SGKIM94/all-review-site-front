@@ -4,7 +4,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { hmrBootstrap } from 'hmr';
-import {enterView} from '@angular/core/src/render3/instructions';
 
 if (environment.production) {
   enableProdMode();
