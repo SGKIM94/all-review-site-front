@@ -2,7 +2,8 @@ import {
     ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output, Renderer2, RendererStyleFlags2, ViewEncapsulation
 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
-import { ObservableMedia } from '@angular/flex-layout';
+// @ts-ignore
+import {MediaObserver} from '@angular/flex-layout';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -87,7 +88,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
      * @param {FuseConfigService} _fuseConfigService
      * @param {FuseMatchMediaService} _fuseMatchMediaService
      * @param {FuseSidebarService} _fuseSidebarService
-     * @param {ObservableMedia} _observableMedia
+     * @param {MediaObserver} _observableMedia
      * @param {Renderer2} _renderer
      */
     constructor(
@@ -97,7 +98,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseMatchMediaService: FuseMatchMediaService,
         private _fuseSidebarService: FuseSidebarService,
-        private _observableMedia: ObservableMedia,
+        private _observableMedia: MediaObserver,
         private _renderer: Renderer2
     )
     {

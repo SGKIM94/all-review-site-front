@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ObservableMedia } from '@angular/flex-layout';
+// @ts-ignore
+import {MediaObserver} from '@angular/flex-layout';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,10 +24,10 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     @Input()
     navigation: any;
 
-    @ViewChild('searchInput')
+    @ViewChild('searchInput', {static: false})
     searchInputField;
 
-    @ViewChild('shortcuts')
+    @ViewChild('shortcuts', {static: false})
     shortcutsEl: ElementRef;
 
     // Private
@@ -39,13 +40,13 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
      * @param {CookieService} _cookieService
      * @param {FuseMatchMediaService} _fuseMatchMediaService
      * @param {FuseNavigationService} _fuseNavigationService
-     * @param {ObservableMedia} _observableMedia
+     * @param {MediaObserver} _observableMedia
      */
     constructor(
         private _cookieService: CookieService,
         private _fuseMatchMediaService: FuseMatchMediaService,
         private _fuseNavigationService: FuseNavigationService,
-        private _observableMedia: ObservableMedia,
+        private _observableMedia: MediaObserver,
         private _renderer: Renderer2
     )
     {
