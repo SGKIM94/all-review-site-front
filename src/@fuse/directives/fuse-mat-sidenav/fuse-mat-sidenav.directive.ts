@@ -1,6 +1,7 @@
 import { Directive, Input, OnInit, HostListener, OnDestroy, HostBinding } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { ObservableMedia } from '@angular/flex-layout';
+// @ts-ignore
+import {MediaObserver} from '@angular/flex-layout';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -30,13 +31,13 @@ export class FuseMatSidenavHelperDirective implements OnInit, OnDestroy
      * @param {FuseMatchMediaService} _fuseMatchMediaService
      * @param {FuseMatSidenavHelperService} _fuseMatSidenavHelperService
      * @param {MatSidenav} _matSidenav
-     * @param {ObservableMedia} _observableMedia
+     * @param {MediaObserver} _observableMedia
      */
     constructor(
         private _fuseMatchMediaService: FuseMatchMediaService,
         private _fuseMatSidenavHelperService: FuseMatSidenavHelperService,
         private _matSidenav: MatSidenav,
-        private _observableMedia: ObservableMedia
+        private _observableMedia: MediaObserver
     )
     {
         // Set the defaults
