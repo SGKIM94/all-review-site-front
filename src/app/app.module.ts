@@ -11,10 +11,9 @@ import { RegisterComponent } from './register/register.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
-import {MatFormFieldModule} from '@angular/material/typings/esm5/form-field';
-import {FlexModule} from '@angular/flex-layout/typings/esm5/flex';
-import {MatButtonModule} from '@angular/material/typings/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -32,9 +31,8 @@ import {MatInputModule} from '@angular/material';
         ReactiveFormsModule,
         SlideshowModule,
         MatFormFieldModule,
-        FlexModule,
-        MatButtonModule,
-        MatInputModule
+        MatInputModule,
+        FlexLayoutModule
     ],
   providers: [],
   bootstrap: [AppComponent]
