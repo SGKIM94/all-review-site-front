@@ -15,16 +15,9 @@ import {SlideshowModule} from 'ng-simple-slideshow';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {RouterModule, Routes} from '@angular/router';
 import {FuseModule} from '../@fuse/fuse.module';
 import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import {FuseSharedModule} from '../@fuse/shared.module';
-
-const appRoutes: Routes = [
-    {path : '', component: HomeComponent},
-    {path : 'login', component : LoginComponent},
-    {path : 'register', component : RegisterComponent},
-];
 
 @NgModule({
   declarations: [
@@ -44,7 +37,6 @@ const appRoutes: Routes = [
         MatFormFieldModule,
         MatInputModule,
         FlexLayoutModule,
-        RouterModule.forRoot(appRoutes),
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
         FuseSharedModule,
