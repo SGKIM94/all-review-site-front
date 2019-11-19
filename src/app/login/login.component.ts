@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  private checkFieldError = (control, field) => {
+  checkFieldError = (control, field) => {
     if (control && control.dirty && !control.valid) {
       this.loginFormErrors[field] = control.errors;
     }
