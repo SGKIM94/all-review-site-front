@@ -19,7 +19,11 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('email 값이 올바르지 않을 때 error 가 loginFormErrors 에 저장되는지', () => {
+    fixture = TestBed.createComponent(LoginComponent);
+    const loginFormError = [];
+
+    component.checkFieldError();
     expect(component).toBeTruthy();
   });
 });
