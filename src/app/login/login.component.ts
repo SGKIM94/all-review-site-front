@@ -78,7 +78,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
   }
 
-
   onLoginFormValuesChanged = () => {
     this.loginFormErrors.map((field) => {
       const control = this.loginFormErrors.get(field);
