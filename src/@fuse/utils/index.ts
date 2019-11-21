@@ -7,10 +7,8 @@ export class FuseUtils
      * @param searchText
      * @returns {any}
      */
-    public static filterArrayByString(mainArr, searchText): any
-    {
-        if ( searchText === '' )
-        {
+    public static filterArrayByString(mainArr, searchText): any {
+        if ( searchText === '' ) {
             return mainArr;
         }
 
@@ -28,37 +26,28 @@ export class FuseUtils
      * @param searchText
      * @returns {boolean}
      */
-    public static searchInObj(itemObj, searchText): boolean
-    {
-        for ( const prop in itemObj )
-        {
-            if ( !itemObj.hasOwnProperty(prop) )
-            {
+    public static searchInObj(itemObj, searchText): boolean {
+        for (const prop in itemObj) {
+            if (!itemObj.hasOwnProperty(prop)) {
                 continue;
             }
 
             const value = itemObj[prop];
 
-            if ( typeof value === 'string' )
-            {
-                if ( this.searchInString(value, searchText) )
-                {
+            if (this.isStringType(value)) {
+                if (this.searchInString(value, searchText)) {
                     return true;
                 }
             }
 
-            else if ( Array.isArray(value) )
-            {
-                if ( this.searchInArray(value, searchText) )
-                {
+            if (this.isArrayType(value)) {
+                if (this.searchInArray(value, searchText)) {
                     return true;
                 }
             }
 
-            if ( typeof value === 'object' )
-            {
-                if ( this.searchInObj(value, searchText) )
-                {
+            if (this.isObjectType(value)) {
+                if (this.searchInObj(value, searchText)) {
                     return true;
                 }
             }
@@ -72,24 +61,14 @@ export class FuseUtils
      * @param searchText
      * @returns {boolean}
      */
-    public static searchInArray(arr, searchText): boolean
-    {
-        for ( const value of arr )
-        {
-            if ( typeof value === 'string' )
-            {
-                if ( this.searchInString(value, searchText) )
-                {
-                    return true;
-                }
+    public static searchInArray(arr, searchText): boolean {
+        for (const value of arr) {
+            if (this.isStringType(value) && this.searchInString(value, searchText)) {
+                return true;
             }
 
-            if ( typeof value === 'object' )
-            {
-                if ( this.searchInObj(value, searchText) )
-                {
-                    return true;
-                }
+            if (this.isObjectType(value) && this.searchInObj(value, searchText)) {
+                return true;
             }
         }
     }
@@ -101,8 +80,7 @@ export class FuseUtils
      * @param searchText
      * @returns {any}
      */
-    public static searchInString(value, searchText): any
-    {
+    public static searchInString(value, searchText): any {
         return value.toLowerCase().includes(searchText);
     }
 
@@ -111,10 +89,8 @@ export class FuseUtils
      *
      * @returns {string}
      */
-    public static generateGUID(): string
-    {
-        function S4(): string
-        {
+    public static generateGUID(): string {
+        function S4(): string {
             return Math.floor((1 + Math.random()) * 0x10000)
                        .toString(16)
                        .substring(1);
@@ -129,16 +105,13 @@ export class FuseUtils
      * @param item
      * @param array
      */
-    public static toggleInArray(item, array): void
-    {
-        if ( array.indexOf(item) === -1 )
-        {
+    public static toggleInArray(item, array): void {
+        if (array.includes(item)) {
             array.push(item);
+            return;
         }
-        else
-        {
-            array.splice(array.indexOf(item), 1);
-        }
+
+        array.splice(array.indexOf(item), 1);
     }
 
     /**
@@ -147,13 +120,24 @@ export class FuseUtils
      * @param text
      * @returns {string}
      */
-    public static handleize(text): string
-    {
+    public static handleize(text): string {
         return text.toString().toLowerCase()
                    .replace(/\s+/g, '-')           // Replace spaces with -
                    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
                    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
                    .replace(/^-+/, '')             // Trim - from start of text
                    .replace(/-+$/, '');            // Trim - from end of text
+    }
+
+    private static isArrayType(value): boolean {
+        return Array.isArray(value);
+    }
+
+    private static isObjectType(value): boolean {
+        return typeof value === 'object';
+    }
+
+    private static isStringType(value): boolean {
+        return typeof value === 'string';
     }
 }
