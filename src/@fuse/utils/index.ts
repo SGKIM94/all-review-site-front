@@ -34,24 +34,18 @@ export class FuseUtils
 
             const value = itemObj[prop];
 
-            if (this.isStringType(value)) {
-                if (this.searchInString(value, searchText)) {
-                    return true;
-                }
-            }
-
-            if (this.isArrayType(value)) {
-                if (this.searchInArray(value, searchText)) {
-                    return true;
-                }
-            }
-
-            if (this.isObjectType(value)) {
-                if (this.searchInObj(value, searchText)) {
-                    return true;
-                }
+            if (this.canSearchInObject(value, searchText)) {
+                return true;
             }
         }
+
+        return false;
+    }
+
+    public static canSearchInObject(value, searchText): boolean {
+        return this.isObjectType(value) && this.searchInObj(value, searchText)
+        || this.isArrayType(value) && this.searchInArray(value, searchText)
+        || this.isObjectType(value) && this.searchInObj(value, searchText);
     }
 
     /**
