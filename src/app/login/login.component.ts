@@ -23,17 +23,18 @@ export class LoginComponent implements OnInit, OnDestroy {
       private _fuseConfigService: FuseConfigService,
       private _formBuilder: FormBuilder) {
 
+    console.log(' inin ');
     this.openMenu();
-
     this.setFuseConfig();
+    this.initializeLoginFormErrors();
+    this._unsubscribeAll = new Subject();
+  }
 
-
+  private initializeLoginFormErrors = () => {
     this.loginFormErrors = {
       email: {},
       password: {}
     };
-
-    this._unsubscribeAll = new Subject();
   }
 
   private setFuseConfig = () => {
