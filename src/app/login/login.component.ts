@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
       private _fuseConfigService: FuseConfigService,
-      private _formBuilder: FormBuilder) {
+      private _formBuilder: FormBuilder,
+      private route: ActivatedRoute,
+  ) {
 
     console.log(' inin ');
     this.openMenu();
