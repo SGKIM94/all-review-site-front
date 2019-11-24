@@ -77,6 +77,8 @@ export class HomeComponent implements OnInit {
               private _fuseTranslationLoaderService: FuseTranslationLoaderService,
               private _translateService: TranslateService,
               private _platform: Platform){
+
+    console.log(' inin ');
     this.openMenu();
     this.navigation = navigation;
     this._fuseNavigationService.register('main', this.navigation);
@@ -94,11 +96,11 @@ export class HomeComponent implements OnInit {
 
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this._fuseConfigService.config
         .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((config) => {
-          this.fuseConfig = config;
+        .subscribe((configs) => {
+          this.fuseConfig = configs;
 
           this.changeBoxedClassToLayoutWidth();
           this.removeClassListWhenContainTheme();
@@ -107,7 +109,7 @@ export class HomeComponent implements OnInit {
         });
   }
 
-  removeClassListWhenContainTheme = () => {
+  removeClassListWhenContainTheme(): void {
     const thisObject = this;
     this.document.body.classList.map((item) => {
       if (item.startsWith('theme-')) {
@@ -116,7 +118,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  changeBoxedClassToLayoutWidth = () => {
+  changeBoxedClassToLayoutWidth(): void {
     if (this.fuseConfig.layout.width === 'boxed') {
       this.document.body.classList.add('boxed');
       return;
@@ -124,7 +126,6 @@ export class HomeComponent implements OnInit {
 
     this.document.body.classList.remove('boxed');
   }
-
 
   ngOnDestroy = () => {
     this._unsubscribeAll.next();
