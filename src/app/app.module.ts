@@ -31,7 +31,6 @@ import {FuseSharedModule} from '../@fuse/shared.module';
   ],
     imports: [
         BrowserModule,
-        AppRoutingModule,
         ReactiveFormsModule,
         SlideshowModule,
         MatFormFieldModule,
@@ -41,7 +40,8 @@ import {FuseSharedModule} from '../@fuse/shared.module';
         FuseProgressBarModule,
         FuseSharedModule,
         FuseSidebarModule,
-        FuseThemeOptionsModule
+        FuseThemeOptionsModule,
+        AppRoutingModule
     ],
   providers: [],
   bootstrap: [AppComponent]
