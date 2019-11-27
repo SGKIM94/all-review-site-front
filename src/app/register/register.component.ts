@@ -91,6 +91,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.addCollapseActiveClassWithout();
   }
 
+  onSubmit = () => {
+  }
+
   private addCollapseActiveClassWithout = () => {
     const collapseElement = document.getElementById('collapse');
     if (collapseElement.classList.contains('collapse-active')) {
@@ -124,6 +127,8 @@ function confirmPassword(control: AbstractControl): any {
     passwordNotMatch: false
   };
 }
+
+
 
 function isControlEmpty(control: AbstractControl): boolean {
   return !control.parent || !control;
