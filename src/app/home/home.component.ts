@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
     {url: 'assets/image/1.png', caption: 'Seeing the world'},
     {url: 'assets/image/2.png', caption: 'Different world'}
   ];
+  width: string = '300px';
   height: string = '100vh';
   minHeight: string;
   arrowSize: string = '30px';
