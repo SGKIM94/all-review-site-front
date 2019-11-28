@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { fuseConfig } from 'app/fuse-config';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import {FuseSharedModule} from '../@fuse/shared.module';
     imports: [
         BrowserModule,
         ReactiveFormsModule,
+        HttpClientModule,
         SlideshowModule,
         MatFormFieldModule,
         MatInputModule,
