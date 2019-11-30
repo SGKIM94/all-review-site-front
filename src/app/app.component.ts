@@ -16,33 +16,20 @@ import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 
 @Component({
-  selector: 'app',
+  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit, OnDestroy
-{
+export class AppComponent implements OnInit, OnDestroy {
   fuseConfig: any;
   navigation: any;
 
-  constructor()
-  {
-  }
+  constructor() {}
 
+  ngOnInit(): void {}
 
-  ngOnInit(): void
-  {
+  ngOnDestroy(): void {}
 
-  }
-
-  ngOnDestroy(): void
-  {
-
-  }
-
-
-  toggleSidebarOpen(key): void
-  {
-  }
+  toggleSidebarOpen(key): void {}
 }
