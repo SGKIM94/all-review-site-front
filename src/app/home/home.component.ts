@@ -79,7 +79,6 @@ export class HomeComponent implements OnInit {
               private _translateService: TranslateService,
               private _platform: Platform){
 
-    console.log(' inin ');
     this.openMenu();
     this.navigation = navigation;
     this._fuseNavigationService.register('main', this.navigation);
@@ -140,11 +139,11 @@ export class HomeComponent implements OnInit {
   }
 
   private addCollapseActiveClassWithout = () => {
-    const collapseElement = this.document.getElementById('collapse');
-    if (collapseElement.classList.contains('collapse-active')) {
-      collapseElement.classList.remove('collapse-active');
-    }
-
-    collapseElement.classList.add('collapse-active');
+    // const collapseElement = this.document.getElementById('collapse');
+    // if (collapseElement.classList.contains('collapse-active')) {
+    //   collapseElement.classList.remove('collapse-active');
+    // }
+    //
+    // collapseElement.classList.add('collapse-active');
   }
 }
