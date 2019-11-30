@@ -1,11 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ElementRef, AfterViewInit, ViewChild} from '@angular/core';
 import {fuseAnimations} from '../../@fuse/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-
 
 @Component({
   selector: 'app-login',
@@ -14,24 +12,25 @@ import {ActivatedRoute} from '@angular/router';
   animations : fuseAnimations
 })
 
-export class LoginComponent implements OnInit, OnDestroy {
-
+export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   loginForm: FormGroup;
   loginFormErrors: any;
 
   private _unsubscribeAll: Subject<any>;
+  @ViewChild('menu', {static: false}) menu: ElementRef;
 
   constructor(
       private _fuseConfigService: FuseConfigService,
-      private _formBuilder: FormBuilder,
-      private route: ActivatedRoute,
-  ) {
+      private _formBuilder: FormBuilder) {
 
-    console.log(' inin ');
     this.openMenu();
     this.setFuseConfig();
     this.initializeLoginFormErrors();
     this._unsubscribeAll = new Subject();
+  }
+
+  ngAfterViewInit(): void {
+    console.log(' daf ' + this.menu.nativeElement);
   }
 
   private initializeLoginFormErrors = () => {
@@ -62,12 +61,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private addCollapseActiveClassWithout = () => {
-    const collapseElement = document.getElementById('collapse');
-    if (collapseElement.classList.contains('collapse-active')) {
-      collapseElement.classList.remove('collapse-active');
-    }
-
-    collapseElement.classList.add('collapse-active');
+    // const collapseElement = document.getElementById('menu');
+    // if (collapseElement.classList.contains('collapse-active')) {
+    //   collapseElement.classList.remove('collapse-active');
+    // }
+    //
+    // collapseElement.classList.add('collapse-active');
   }
 
   ngOnInit(): void {
@@ -105,5 +104,4 @@ export class LoginComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
-
 }
