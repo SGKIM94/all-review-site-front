@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ElementRef, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {fuseAnimations} from '../../@fuse/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
@@ -12,36 +12,37 @@ import {takeUntil} from 'rxjs/operators';
   animations : fuseAnimations
 })
 
-export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loginFormErrors: any;
+  menuClass: string;
 
-  private _unsubscribeAll: Subject<any>;
-  @ViewChild('menu', {static: false}) menu: ElementRef;
+  private unsubscribeAll: Subject<any>;
 
   constructor(
-      private _fuseConfigService: FuseConfigService,
-      private _formBuilder: FormBuilder) {
+      private fuseConfigService: FuseConfigService,
+      private formBuilder: FormBuilder) {
 
+    this.initializeMenuClass();
     this.openMenu();
     this.setFuseConfig();
     this.initializeLoginFormErrors();
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
   }
 
-  ngAfterViewInit(): void {
-    console.log(' daf ' + this.menu.nativeElement);
+  private initializeMenuClass(): void {
+    this.menuClass = 'collapse navbar-collapse';
   }
 
-  private initializeLoginFormErrors = () => {
+  private initializeLoginFormErrors(): void {
     this.loginFormErrors = {
       email: {},
       password: {}
     };
   }
 
-  private setFuseConfig = () => {
-    this._fuseConfigService.config = {
+  private setFuseConfig(): void {
+    this.fuseConfigService.config = {
       layout: {
         navbar: {
           hidden: true
@@ -56,33 +57,36 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-  openMenu = () => {
+  openMenu(): void {
     this.addCollapseActiveClassWithout();
   }
 
-  private addCollapseActiveClassWithout = () => {
-    // const collapseElement = document.getElementById('menu');
-    // if (collapseElement.classList.contains('collapse-active')) {
-    //   collapseElement.classList.remove('collapse-active');
-    // }
-    //
-    // collapseElement.classList.add('collapse-active');
+  private addCollapseActiveClassWithout(): void {
+    if (this.haveActiveClass()) {
+      this.menuClass = this.menuClass.split(' ')[0];
+    }
+
+    this.menuClass += ' collapse-active';
+  }
+
+  private haveActiveClass(): boolean {
+    return this.menuClass.includes('collapse-active');
   }
 
   ngOnInit(): void {
-    this.loginForm = this._formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
 
     this.loginForm.valueChanges
-        .pipe(takeUntil(this._unsubscribeAll))
+        .pipe(takeUntil(this.unsubscribeAll))
         .subscribe(() => {
           this.onLoginFormValuesChanged();
         });
   }
 
-  onLoginFormValuesChanged = () => {
+  onLoginFormValuesChanged(): void {
     this.loginFormErrors.map((field) => {
       const control = this.loginFormErrors.get(field);
 
@@ -90,18 +94,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  checkFieldError = (control, field) => {
+  checkFieldError(control, field): void{
     if (control && control.dirty && !control.valid) {
       this.loginFormErrors[field] = control.errors;
     }
   }
 
-  onSubmit = () => {
-  }
-
-
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 }
