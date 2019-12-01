@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {config, interval, Subject} from 'rxjs';
 import {colorSets} from '@swimlane/ngx-charts/release/utils';
 import {map, takeUntil} from 'rxjs/operators';
@@ -33,14 +33,13 @@ timeInterval$.pipe(
     })
 );
 
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   public index;
   fuseConfig: any;
   navigation: any;
@@ -68,37 +67,41 @@ export class HomeComponent implements OnInit {
   captionBackground: string = 'transparent';
   lazyLoad: boolean = false;
   hideOnNoSlides: boolean = false;
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   constructor(@Inject(DOCUMENT) private document: any,
-              private _fuseConfigService: FuseConfigService,
-              private _fuseNavigationService: FuseNavigationService,
-              private _fuseSidebarService: FuseSidebarService,
-              private _fuseSplashScreenService: FuseSplashScreenService,
-              private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-              private _translateService: TranslateService,
-              private _platform: Platform){
-
+              private fuseConfigService: FuseConfigService,
+              private fuseNavigationService: FuseNavigationService,
+              private fuseSidebarService: FuseSidebarService,
+              private fuseSplashScreenService: FuseSplashScreenService,
+              private fuseTranslationLoaderService: FuseTranslationLoaderService,
+              private translateService: TranslateService,
+              private platform: Platform,
+              private menuClass: string){
+    this.initializeMenuClass();
     this.openMenu();
     this.navigation = navigation;
-    this._fuseNavigationService.register('main', this.navigation);
-    this._fuseNavigationService.setCurrentNavigation('main');
-    this._translateService.addLangs(['en', 'tr']);
-    this._translateService.setDefaultLang('en');
-    this._fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
-    this._translateService.use('en');
+    this.fuseNavigationService.register('main', this.navigation);
+    this.fuseNavigationService.setCurrentNavigation('main');
+    this.translateService.addLangs(['en', 'tr']);
+    this.translateService.setDefaultLang('en');
+    this.fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
+    this.translateService.use('en');
 
-    if (this._platform.ANDROID || this._platform.IOS) {
+    if (this.platform.ANDROID || this.platform.IOS) {
       this.document.body.classList.add('is-mobile');
     }
 
-    this._unsubscribeAll = new Subject();
+    this.unsubscribeAll = new Subject();
+  }
 
+  private initializeMenuClass(): void {
+    this.menuClass = 'collapse navbar-collapse';
   }
 
   ngOnInit(): void {
-    this._fuseConfigService.config
-        .pipe(takeUntil(this._unsubscribeAll))
+    this.fuseConfigService.config
+        .pipe(takeUntil(this.unsubscribeAll))
         .subscribe((configs) => {
           this.fuseConfig = configs;
 
@@ -127,23 +130,26 @@ export class HomeComponent implements OnInit {
     this.document.body.classList.remove('boxed');
   }
 
-  ngOnDestroy = () => {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
-  private openMenu = () => {
+  private openMenu(): void {
     this.document.body.classList.add('noScroll');
 
     this.addCollapseActiveClassWithout();
   }
 
-  private addCollapseActiveClassWithout = () => {
-    // const collapseElement = this.document.getElementById('collapse');
-    // if (collapseElement.classList.contains('collapse-active')) {
-    //   collapseElement.classList.remove('collapse-active');
-    // }
-    //
-    // collapseElement.classList.add('collapse-active');
+  private addCollapseActiveClassWithout(): void {
+    if (this.haveActiveClass()) {
+      this.menuClass = this.menuClass.split(' ')[0];
+    }
+
+    this.menuClass += ' collapse-active';
+  }
+
+  private haveActiveClass(): boolean {
+    return this.menuClass.includes('collapse-active');
   }
 }
