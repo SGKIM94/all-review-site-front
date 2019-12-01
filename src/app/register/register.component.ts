@@ -14,6 +14,7 @@ import {takeUntil} from 'rxjs/operators';
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   registerFormErrors: any;
+  menuClass: string;
 
   private _unsubscribeAll: Subject<any>;
 
@@ -26,7 +27,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   }
 
-  private initializeRegisterErrors = () => {
+  private initializeRegisterErrors(): void {
     this.registerFormErrors = {
       name: {},
       phone: {},
@@ -36,7 +37,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     };
   }
 
-  private setFuseConfig = () => {
+  private setFuseConfig(): void {
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -54,11 +55,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.registerForm = this._formBuilder.group({
-      name : ['', Validators.required],
-      email : ['', [Validators.required, Validators.email]],
-      mobile : ['', [Validators.required, Validators.pattern(/^\+?\d{10}$/)]],
-      password : ['', [Validators.required, Validators.minLength(6)]],
-      passwordConfirm : ['', [Validators.required, confirmPassword]]
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', [Validators.required, Validators.pattern(/^\+?\d{10}$/)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordConfirm: ['', [Validators.required, confirmPassword]]
     });
 
     this.registerForm.valueChanges
@@ -68,7 +69,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         });
   }
 
-  onRegisterFormValuesChanged = () => {
+  onRegisterFormValuesChanged(): void {
     this.registerFormErrors.map((field) => {
       const control = this.registerFormErrors.get(field);
 
@@ -76,7 +77,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  private checkFieldError = (control, field) => {
+  private checkFieldError(control, field): void {
     if (control && control.dirty && !control.valid) {
       this.registerFormErrors[field] = control.errors;
     }
@@ -87,20 +88,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
 
-  openMenu = () => {
+  openMenu(): void {
     this.addCollapseActiveClassWithout();
   }
 
-  onSubmit = () => {
+  onSubmit(): void {
   }
 
-  private addCollapseActiveClassWithout = () => {
-    const collapseElement = document.getElementById('collapse');
-    if (collapseElement.classList.contains('collapse-active')) {
-      collapseElement.classList.remove('collapse-active');
+  private addCollapseActiveClassWithout(): void {
+    if (this.haveActiveClass()) {
+      this.menuClass = this.menuClass.split(' ')[0];
     }
 
-    collapseElement.classList.add('collapse-active');
+    this.menuClass += ' collapse-active';
+  }
+
+  private haveActiveClass(): boolean {
+    return this.menuClass.includes('collapse-active');
   }
 }
 
@@ -127,8 +131,6 @@ function confirmPassword(control: AbstractControl): any {
     passwordNotMatch: false
   };
 }
-
-
 
 function isControlEmpty(control: AbstractControl): boolean {
   return !control.parent || !control;
