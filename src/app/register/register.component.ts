@@ -14,13 +14,14 @@ import {takeUntil} from 'rxjs/operators';
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   registerFormErrors: any;
-  menuClass: string;
+  menuClass = ['collapse', 'collapse-active'];
 
   private _unsubscribeAll: Subject<any>;
 
   constructor(
       private _fuseConfigService: FuseConfigService,
       private _formBuilder: FormBuilder) {
+
     this.openMenu();
     this.setFuseConfig();
     this.initializeRegisterErrors();
@@ -97,10 +98,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
-      this.menuClass = this.menuClass.split(' ')[0];
+      this.menuClass[1] = '';
     }
 
-    this.menuClass += ' collapse-active';
+    this.menuClass[1] = 'collapse-active';
   }
 
   private haveActiveClass(): boolean {
