@@ -98,7 +98,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
-      this.menuClass[1] = '';
+      this.menuClass.splice(1, 1);
     }
 
     this.menuClass[1] = 'collapse-active';
