@@ -15,8 +15,7 @@ import {takeUntil} from 'rxjs/operators';
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   loginFormErrors: any;
-  menuClass: string;
-
+  menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
 
   constructor(
@@ -28,10 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.setFuseConfig();
     this.initializeLoginFormErrors();
     this.unsubscribeAll = new Subject();
-  }
-
-  private initializeMenuClass(): void {
-    this.menuClass = 'collapse navbar-collapse';
   }
 
   private initializeLoginFormErrors(): void {
@@ -63,10 +58,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
-      this.menuClass = this.menuClass.split(' ')[0];
+      this.menuClass.splice(1, 1);
     }
 
-    this.menuClass += ' collapse-active';
+    this.menuClass[1] = 'collapse-active';
   }
 
   private haveActiveClass(): boolean {

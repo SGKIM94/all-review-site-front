@@ -67,7 +67,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   captionBackground: string = 'transparent';
   lazyLoad: boolean = false;
   hideOnNoSlides: boolean = false;
+  menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
+
+
 
   constructor(@Inject(DOCUMENT) private document: any,
               private fuseConfigService: FuseConfigService,
@@ -76,8 +79,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private fuseSplashScreenService: FuseSplashScreenService,
               private fuseTranslationLoaderService: FuseTranslationLoaderService,
               private translateService: TranslateService,
-              private platform: Platform,
-              private menuClass: string){
+              private platform: Platform){
     this.initializeMenuClass();
     this.openMenu();
     this.navigation = navigation;
@@ -96,7 +98,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initializeMenuClass(): void {
-    this.menuClass = 'collapse navbar-collapse';
   }
 
   ngOnInit(): void {
@@ -143,10 +144,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
-      this.menuClass = this.menuClass.split(' ')[0];
+      this.menuClass.splice(1, 1);
     }
 
-    this.menuClass += ' collapse-active';
+    this.menuClass[1] = 'collapse-active';
   }
 
   private haveActiveClass(): boolean {
