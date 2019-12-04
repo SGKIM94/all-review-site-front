@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
+import {async} from 'rxjs-compat/scheduler/async';
 
 @Component({
   selector: 'app-login',
@@ -54,6 +55,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   openMenu(): void {
     this.addCollapseActiveClassWithout();
   }
+
+  onSubmit():  void {
+
+  }
+
 
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
