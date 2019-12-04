@@ -21,8 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
       private fuseConfigService: FuseConfigService,
       private formBuilder: FormBuilder) {
-
-    this.initializeMenuClass();
+    
     this.openMenu();
     this.setFuseConfig();
     this.initializeLoginFormErrors();
