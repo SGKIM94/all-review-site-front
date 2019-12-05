@@ -16,11 +16,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registerFormErrors: any;
   menuClass = ['collapse', 'collapse-active'];
 
-  private _unsubscribeAll: Subject<any>;
+  private unsubscribeAll: Subject<any>;
 
   constructor(
-      private _fuseConfigService: FuseConfigService,
-      private _formBuilder: FormBuilder) {
+      private fuseConfigService: FuseConfigService,
+      private formBuilder: FormBuilder) {
 
     this.openMenu();
     this.setFuseConfig();
@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   private setFuseConfig(): void {
-    this._fuseConfigService.config = {
+    this.fuseConfigService.config = {
       layout: {
         navbar: {
           hidden: true
@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.registerForm = this._formBuilder.group({
+    this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       mobile: ['', [Validators.required, Validators.pattern(/^\+?\d{10}$/)]],
@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
 
     this.registerForm.valueChanges
-        .pipe(takeUntil(this._unsubscribeAll))
+        .pipe(takeUntil(this.unsubscribeAll))
         .subscribe(() => {
           this.onRegisterFormValuesChanged();
         });
@@ -85,8 +85,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   openMenu(): void {
