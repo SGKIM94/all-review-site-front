@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {fuseAnimations} from '../../@fuse/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
-import {async} from 'rxjs-compat/scheduler/async';
+import * as $ from 'jquery';
+
+import {fuseAnimations} from '@fuse/animations/index';
+import {FuseConfigService} from '../../@fuse/services/config.service';
 
 @Component({
   selector: 'app-login',
@@ -64,6 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
       this.menuClass.splice(1, 1);
+      return;
     }
 
     this.menuClass[1] = 'collapse-active';
