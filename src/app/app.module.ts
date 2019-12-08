@@ -14,11 +14,17 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material';
+
+import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatRippleModule} from '@angular/material';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FuseModule} from '../@fuse/fuse.module';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import {FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule} from '@fuse/components';
 import {FuseSharedModule} from '../@fuse/shared.module';
+import {MaterialModule} from './fuse-config/material.module';
+import {TranslateModule} from '@ngx-translate/core';
+import {LayoutModule} from 'app/layout/layout.module';
 
 @NgModule({
   declarations: [
@@ -31,20 +37,36 @@ import {FuseSharedModule} from '../@fuse/shared.module';
     HomeComponent,
   ],
     imports: [
+        SlideshowModule,
         BrowserModule,
         BrowserAnimationsModule,
+        TranslateModule.forRoot(),
         ReactiveFormsModule,
         HttpClientModule,
         SlideshowModule,
+
+        // for datepicker
+        MatMomentDateModule,
+
+        // for directive
         MatFormFieldModule,
         MatInputModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatRippleModule,
+
         FlexLayoutModule,
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
-        AppRoutingModule
+
+        LayoutModule,
+        AppRoutingModule,
+        MaterialModule
     ],
   providers: [],
   bootstrap: [AppComponent]
