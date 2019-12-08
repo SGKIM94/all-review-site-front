@@ -25,6 +25,7 @@ import {FuseSharedModule} from '../@fuse/shared.module';
 import {MaterialModule} from './fuse-config/material.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {LayoutModule} from 'app/layout/layout.module';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -35,15 +36,16 @@ import {LayoutModule} from 'app/layout/layout.module';
     AnswerComponent,
     RegisterComponent,
     HomeComponent,
+    ForgotPasswordComponent,
   ],
     imports: [
         SlideshowModule,
         BrowserModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot(),
-        ReactiveFormsModule,
         HttpClientModule,
+        ReactiveFormsModule,
         SlideshowModule,
+        TranslateModule.forRoot(),
 
         // for datepicker
         MatMomentDateModule,
