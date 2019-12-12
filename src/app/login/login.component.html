@@ -1,6 +1,5 @@
 <div class="navbar custom-navbar navbar-fixed-top" role="navigation">
     <div class="container">
-
         <div class="navbar-header">
             <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" (click)="openMenu()">
                 <span class="icon icon-bar"></span>
@@ -44,12 +43,10 @@
             <div class="login">
                 <div class="row">
                     <div fxLayout="column">
-                        <form class="inq-form" fxLayout="column"
-                              fxLayoutAlign="start"
+                        <form class="form-layout" fxLayout="column" fxLayoutAlign="start"
                               fxFlex="1 0 auto" name="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
-                                <mat-form-field class="col-md-6 col-xl-10">
+                                <mat-form-field class="col-md-6 col-xs-10">
                                     <input matInput placeholder="Email" formControlName="email" required>
                                     <mat-error *ngIf="loginFormErrors.email.required">
                                         Email is required!
@@ -60,7 +57,7 @@
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayoutAlign="center" fxFlex="100 0 auto">
-                                <mat-form-field class="col-md-6 col-xl-10">
+                                <mat-form-field class="col-md-6 col-xs-10">
                                     <input matInput type="password" placeholder="Password" formControlName="password" required>
                                     <mat-error *ngIf="loginFormErrors.password.required">
                                         Password is required!
