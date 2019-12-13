@@ -89,14 +89,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onLoginFormValuesChanged(): void {
-    this.loginFormErrors.forEach(obj => {
-      Object.entries(obj).forEach(([key, value]) => {
-        const control = this.loginFormErrors.get(key);
-        this.checkFieldError(control, key);
-      });
+    Object.entries(this.loginFormErrors).forEach(([key, value]) => {
+      const control = this.loginForm.get(key);
+      this.checkFieldError(control, key);
     });
   }
-  checkFieldError(control, field): void{
+  checkFieldError(control, field): void {
     if (control && control.dirty && !control.valid) {
       this.loginFormErrors[field] = control.errors;
     }
