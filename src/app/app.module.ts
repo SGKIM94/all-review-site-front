@@ -41,8 +41,8 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
     imports: [
         SlideshowModule,
         BrowserModule,
-        BrowserAnimationsModule,
         HttpClientModule,
+        BrowserAnimationsModule,
         ReactiveFormsModule,
         SlideshowModule,
         TranslateModule.forRoot(),
