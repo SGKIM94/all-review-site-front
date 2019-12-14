@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import * as $ from 'jquery';
+import {RestService} from '../rest-config/login/login.service';
 
 import {fuseAnimations} from '@fuse/animations/index';
 import {FuseConfigService} from '../../@fuse/services/config.service';
@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
       private fuseConfigService: FuseConfigService,
-      private formBuilder: FormBuilder) {
+      private formBuilder: FormBuilder,
+      private rest: RestService) {
     
     this.openMenu();
     this.setFuseConfig();
@@ -58,7 +59,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit():  void {
-
+    const loginDto = this.loginForm.getRawValue()
+    this.rest.login(loginDto).subscribe((data: {}) => {
+      console.log(' data ' + data);
+    });
   }
 
 
