@@ -3,14 +3,12 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Observer, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 
-
-const endPoint = 'http://localhost:5000/';
+const endPoint = 'http://localhost:5000/api/users/login/';
 const httpOptions = {
     headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE',
-        'Access-Control-Allow-Headers': 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization'
+        'Content-Type':  'application/json',
+        'Access-Control-Allow-Credentials' : 'true',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
     })
 };
 
@@ -25,14 +23,15 @@ export class RestService {
     }
 
     login(user): Observable<any> {
-        return this.http.post<any>(endPoint + '/users/login', JSON.stringify(user), httpOptions).pipe (
-            tap((e) => console.log(`login w/ id=${e.email}`)),
+        return this.http.post(endPoint, JSON.stringify(user), httpOptions)
+            .pipe (
+            // tap((e) => console.log(`login w/ id=${e.email}`)),
             catchError(this.handleError<any>('login'))
         );
     }
 
     getUserData(): Observable<any> {
-        return this.http.get(endPoint + '/users', httpOptions).pipe (
+        return this.http.get(endPoint + '/users/login', httpOptions).pipe (
             map(this.extractData));
     }
 
