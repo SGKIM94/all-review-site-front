@@ -6,6 +6,7 @@ import {RestService} from '../rest-config/login/login.service';
 
 import {fuseAnimations} from '@fuse/animations/index';
 import {FuseConfigService} from '../../@fuse/services/config.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
       private fuseConfigService: FuseConfigService,
       private formBuilder: FormBuilder,
-      private rest: RestService) {
+      private rest: RestService,
+      private router: Router) {
     
     this.openMenu();
     this.setFuseConfig();
@@ -59,10 +61,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit():  void {
-    const loginDto = this.loginForm.getRawValue()
+    const loginDto = this.loginForm.getRawValue();
     this.rest.login(loginDto).subscribe((data: {}) => {
-      console.log(' data ' + data);
+      console.log(' data ' + JSON.stringify(data, null, 4));
     });
+
+    this.router.navigate(['/home']).then();
   }
 
 
