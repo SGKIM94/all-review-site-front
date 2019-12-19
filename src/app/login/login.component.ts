@@ -62,11 +62,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit():  void {
     const loginDto = this.loginForm.getRawValue();
-    this.rest.login(loginDto).subscribe((data: {}) => {
-      console.log(' data ' + JSON.stringify(data, null, 4));
+    this.rest.login(loginDto).subscribe(response => {
+    }, error =>{
+      console.log(' error : ' + error);
     });
-
-    this.router.navigate(['/home']).then();
   }
 
 
