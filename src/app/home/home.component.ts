@@ -15,16 +15,6 @@ import {navigation} from '../navigation/navigation';
 import {locale as navigationEnglish} from '../navigation/i18n/en';
 import {locale as navigationTurkish} from '../navigation/i18n/tr';
 
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  // ...
-} from '@angular/animations';
-
-
 const timeInterval$ = interval(10000);
 
 timeInterval$.pipe(
@@ -114,12 +104,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   removeClassListWhenContainTheme(): void {
-    const thisObject = this;
-    this.document.body.classList.map((item) => {
-      if (item.startsWith('theme-')) {
-        thisObject.document.body.classList.remove(item);
-      }
-    });
+    const classList = this.document.body.classList;
+
+    for (const item of classList) {
+      this.removeThemeClassName(item);
+    }
+  }
+
+  private removeThemeClassName(item): void {
+    if (item.startsWith('theme-')) {
+      this.document.body.classList.remove(item);
+    }
   }
 
   changeBoxedClassToLayoutWidth(): void {
@@ -137,6 +132,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private openMenu(): void {
+    console.log(' this.document.body.classList ' + this.document.body.classList);
+    console.log(' type : ' + typeof this.document.body.classList);
     this.document.body.classList.add('noScroll');
 
     this.addCollapseActiveClassWithout();
