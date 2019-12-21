@@ -8,7 +8,6 @@ import {FuseConfigService} from '../../@fuse/services/config.service';
 import {NavigationExtras, Router} from '@angular/router';
 import {NotifierService} from 'angular-notifier';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,6 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
   private readonly notifier: NotifierService;
+
   constructor(
       private fuseConfigService: FuseConfigService,
       private formBuilder: FormBuilder,
@@ -67,12 +67,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     const loginDto = this.loginForm.getRawValue();
     const token = this.routeToLogin(loginDto);
 
+    if (token === '') {
+      this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
+      return;
+    }
+
     const loginToken: NavigationExtras = {
       queryParams: {
         'token': token,
         'fragment': 'login'
       }
     };
+
+    // this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
 
     this.router.navigate(['/home'], loginToken).then();
   }
@@ -81,6 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     let token = '';
     this.rest.login(loginDto).subscribe(response => {
       console.log(JSON.stringify(response, null, 4));
+
       token = response.token;
 
     }, error => {
