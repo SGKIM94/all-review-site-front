@@ -1,7 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {config, interval, Subject} from 'rxjs';
-import {colorSets} from '@swimlane/ngx-charts/release/utils';
-import {map, takeUntil} from 'rxjs/operators';
+import {config, interval, Observable, Subject} from 'rxjs';
+import {filter, map, takeUntil, tap} from 'rxjs/operators';
 import {IImage} from 'ng-simple-slideshow';
 import {DOCUMENT} from '@angular/common';
 import {FuseConfigService} from '../../@fuse/services/config.service';
@@ -14,6 +13,8 @@ import {Platform} from '@angular/cdk/platform';
 import {navigation} from '../navigation/navigation';
 import {locale as navigationEnglish} from '../navigation/i18n/en';
 import {locale as navigationTurkish} from '../navigation/i18n/tr';
+import {ActivatedRoute} from '@angular/router';
+import {NotifierService} from 'angular-notifier';
 
 const timeInterval$ = interval(10000);
 
@@ -34,8 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   fuseConfig: any;
   navigation: any;
   imageUrls: (string | IImage)[] = [
-    {url: 'assets/image/1.png', caption: 'Seeing the world'},
-    {url: 'assets/image/2.png', caption: 'Different world'}
+    {url: '../../assets/image/1.png', caption: 'Seeing the world'},
+    {url: '../../assets/image/2.png', caption: 'Different world'}
   ];
   width: string = '300px';
   height: string = '100vh';
@@ -59,8 +60,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   hideOnNoSlides: boolean = false;
   menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
-
-
+  private notifier: NotifierService;
+  private token: Observable<string>;
 
   constructor(@Inject(DOCUMENT) private document: any,
               private fuseConfigService: FuseConfigService,
@@ -69,7 +70,10 @@ export class HomeComponent implements OnInit, OnDestroy {
               private fuseSplashScreenService: FuseSplashScreenService,
               private fuseTranslationLoaderService: FuseTranslationLoaderService,
               private translateService: TranslateService,
-              private platform: Platform){
+              private platform: Platform,
+              private notifierService: NotifierService,
+              private router: ActivatedRoute){
+
     this.initializeMenuClass();
     this.openMenu();
     this.navigation = navigation;
@@ -79,10 +83,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.translateService.setDefaultLang('en');
     this.fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
     this.translateService.use('en');
+    this.notifier = notifierService;
 
     if (this.platform.ANDROID || this.platform.IOS) {
       this.document.body.classList.add('is-mobile');
     }
+
+    this.setRouterToken();
+    this.showLoginNotification();
+
+    this.router
+        .queryParamMap
+        .pipe(
+            tap(params => console.log(' params : ' + JSON.stringify(params, null, 4))),
+            filter(params => params.get('fragment') === 'login'),
+            tap(() => this.showLoginNotification())
+        );
 
     this.unsubscribeAll = new Subject();
   }
@@ -91,6 +107,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('init');
+    this.notifier.notify('success', '로그인에 성공하였습니다.');
+
+    this.setFuseConfig();
+  }
+
+  private showLoginNotification(): void {
+    console.log('in');
+    this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
+    this.notifier.notify('success', '로그인에 성공하였습니다.');
+  }
+
+  private setFuseConfig(): void {
     this.fuseConfigService.config
         .pipe(takeUntil(this.unsubscribeAll))
         .subscribe((configs) => {
@@ -101,6 +130,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.document.body.classList.add(this.fuseConfig.colorTheme);
         });
+  }
+
+  private setRouterToken(): void {
+    this.token = this.router
+        .queryParamMap
+        .pipe(
+            map(params => params.get('token') || 'None')
+        );
   }
 
   removeClassListWhenContainTheme(): void {
