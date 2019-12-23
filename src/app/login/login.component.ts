@@ -63,40 +63,36 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.addCollapseActiveClassWithout();
   }
 
-  onSubmit():  void {
+  onSubmit(): void {
     const loginDto = this.loginForm.getRawValue();
-    const token = this.routeToLogin(loginDto);
+    let token = '';
 
-    if (token === '') {
-      this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
-      return;
-    }
+    this.rest.login(loginDto).subscribe(response => {
+      if (response === undefined) {
+        return;
+      }
 
-    const loginToken: NavigationExtras = {
+      token = response.token;
+    }, error => {
+      this.showErrorNotice();
+    });
+
+    this.router
+        .navigate(['/home'], this.getNavigationExtrasToHome(token))
+        .then();
+  }
+
+  private getNavigationExtrasToHome(token): object {
+    return {
       queryParams: {
         'token': token,
         'fragment': 'login'
       }
     };
-
-    // this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
-
-    this.router.navigate(['/home'], loginToken).then();
   }
 
-  private routeToLogin(loginDto): string {
-    let token = '';
-    this.rest.login(loginDto).subscribe(response => {
-      console.log(JSON.stringify(response, null, 4));
-
-      token = response.token;
-
-    }, error => {
-      this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
-      console.error(error);
-    });
-
-    return token;
+  private showErrorNotice(): void {
+    this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
   }
 
   private addCollapseActiveClassWithout(): void {
