@@ -34,10 +34,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   public index;
   fuseConfig: any;
   navigation: any;
-  imageUrls: (string | IImage)[] = [
-    {url: '../../assets/image/1.png', caption: 'Seeing the world'},
-    {url: '../../assets/image/2.png', caption: 'Different world'}
-  ];
+  // imageUrls: (string | IImage)[] = [
+  //   {url: '../../assets/image/1.png', caption: 'Seeing the world'},
+  //   {url: '../../assets/image/2.png', caption: 'Different world'}
+  // ];
   width: string = '300px';
   height: string = '100vh';
   minHeight: string;
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   hideOnNoSlides: boolean = false;
   menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
-  private notifier: NotifierService;
+  private readonly notifier: NotifierService;
   private token: Observable<string>;
 
   constructor(@Inject(DOCUMENT) private document: any,
@@ -74,6 +74,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private notifierService: NotifierService,
               private router: ActivatedRoute){
 
+    this.notifier = notifierService;
     this.initializeMenuClass();
     this.openMenu();
     this.navigation = navigation;
@@ -83,7 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.translateService.setDefaultLang('en');
     this.fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
     this.translateService.use('en');
-    this.notifier = notifierService;
+
 
     if (this.platform.ANDROID || this.platform.IOS) {
       this.document.body.classList.add('is-mobile');
@@ -92,13 +93,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.setRouterToken();
     this.showLoginNotification();
 
-    this.router
-        .queryParamMap
-        .pipe(
-            tap(params => console.log(' params : ' + JSON.stringify(params, null, 4))),
-            filter(params => params.get('fragment') === 'login'),
-            tap(() => this.showLoginNotification())
-        );
+    // this.router
+    //     .queryParamMap
+    //     .pipe(
+    //         tap(params => console.log(' params : ' + JSON.stringify(params, null, 4))),
+    //         filter(params => params.get('fragment') === 'login'),
+    //         tap(() => this.showLoginNotification())
+    //     );
 
     this.unsubscribeAll = new Subject();
   }
@@ -108,7 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('init');
-    this.notifier.notify('success', '로그인에 성공하였습니다.');
+    this.notifier.notify('error', '로그인에 성공하였습니다.');
 
     this.setFuseConfig();
   }
@@ -186,5 +187,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private haveActiveClass(): boolean {
     return this.menuClass.includes('collapse-active');
+  }
+
+  onSubmit(): void {
+    this.notifier.notify('success', '로그인에 성공하였습니다.');
   }
 }
