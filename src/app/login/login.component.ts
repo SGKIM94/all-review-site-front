@@ -68,21 +68,25 @@ export class LoginComponent implements OnInit, OnDestroy {
     let token = '';
 
     this.rest.login(loginDto).subscribe(response => {
-      if (response === undefined) {
+      if (response.code === '999') {
         return;
       }
 
-      token = response.token;
+      token = response.information.token;
     }, error => {
       this.showErrorNotice();
     });
 
+    this.routeToHome(token);
+  }
+
+  private routeToHome(token: string): void {
     this.router
         .navigate(['/home'], this.getNavigationExtrasToHome(token))
         .then();
   }
 
-  private getNavigationExtrasToHome(token): object {
+  private getNavigationExtrasToHome(token: string): object {
     return {
       queryParams: {
         'token': token,
