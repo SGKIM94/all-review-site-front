@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {filter, takeUntil, tap} from 'rxjs/operators';
 import {RestService} from '../rest-config/login/login.service';
 import {fuseAnimations} from '@fuse/animations/index';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {NavigationExtras, Router} from '@angular/router';
 import {NotifierService} from 'angular-notifier';
+import * as ResponseCode from '../rest-config/code';
 
 @Component({
   selector: 'app-login',
@@ -68,16 +69,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     let token = '';
 
     this.rest.login(loginDto).subscribe(response => {
-      if (response.code === '999') {
-        return;
+      if (this.isSuccessResponse(response.code)) {
+          this.showErrorNotice();
+          return;
       }
 
       token = response.information.token;
-    }, error => {
-      this.showErrorNotice();
-    });
+      this.routeToHome(token);
 
-    this.routeToHome(token);
+    }, error => {
+        this.showErrorNotice();
+    });
+  }
+
+  private isSuccessResponse(response: string): boolean {
+    return response !== ResponseCode.SUCCESS;
   }
 
   private routeToHome(token: string): void {
