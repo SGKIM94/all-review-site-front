@@ -15,6 +15,7 @@ const httpOptions = {
 @Injectable({
     providedIn: 'root'
 })
+
 export class RestService {
     constructor(private http: HttpClient) {}
 
@@ -25,7 +26,6 @@ export class RestService {
     login(user): Observable<any> {
         return this.http.post(endPoint, JSON.stringify(user), httpOptions)
             .pipe (
-            // tap((e) => console.log(`login w/ id=${e.email}`)),
             catchError(this.handleError<any>('login'))
         );
     }
