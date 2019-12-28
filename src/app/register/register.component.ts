@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {fuseAnimations} from '../../@fuse/animations';
+import {fuseAnimations} from '@fuse/animations/index';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
@@ -25,13 +25,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.openMenu();
     this.setFuseConfig();
     this.initializeRegisterErrors();
+    this.unsubscribeAll = new Subject();
 
   }
 
   private initializeRegisterErrors(): void {
     this.registerFormErrors = {
       name: {},
-      phone: {},
+      email: {},
       mobile: {},
       password: {},
       passwordConfirm: {},
@@ -71,10 +72,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onRegisterFormValuesChanged(): void {
-    this.registerFormErrors.map((field) => {
-      const control = this.registerFormErrors.get(field);
-
-      this.checkFieldError(control, field);
+    Object.entries(this.registerFormErrors).forEach(([key, value]) => {
+      const control = this.registerForm.get(key);
+      this.checkFieldError(control, key);
     });
   }
 
