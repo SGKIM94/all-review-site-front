@@ -34,15 +34,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   public index;
   fuseConfig: any;
   navigation: any;
-  // imageUrls: (string | IImage)[] = [
-  //   {url: '../../assets/image/1.png', caption: 'Seeing the world'},
-  //   {url: '../../assets/image/2.png', caption: 'Different world'}
-  // ];
-  width: string = '300px';
+  imageUrls: (string | IImage)[] = [
+    {url: '../../assets/image/1.png', caption: 'Seeing the world'},
+    {url: '../../assets/image/2.png', caption: 'Different world'}
+  ];
+  width: string = '100%';
   height: string = '100vh';
   minHeight: string;
-  arrowSize: string = '30px';
-  showArrows: boolean = true;
+  arrowSize: string = '10px';
+  showArrows: boolean = false;
   disableSwiping: boolean = false;
   autoPlay: boolean = true;
   autoPlayInterval: number = 3000;
