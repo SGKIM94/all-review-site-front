@@ -4,6 +4,10 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {RestService} from '../rest-config/login/login.service';
+import * as ResponseCode from '../rest-config/code';
+import {NotifierService} from 'angular-notifier';
 
 @Component({
   selector: 'app-register-new',
@@ -15,18 +19,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   registerFormErrors: any;
   menuClass = ['collapse', 'collapse-active'];
-
   private unsubscribeAll: Subject<any>;
+  private readonly notifier: NotifierService;
 
   constructor(
       private fuseConfigService: FuseConfigService,
-      private formBuilder: FormBuilder) {
+      private formBuilder: FormBuilder,
+      private rest: RestService,
+      private router: Router,
+      private notifierService: NotifierService) {
 
     this.openMenu();
     this.setFuseConfig();
     this.initializeRegisterErrors();
     this.unsubscribeAll = new Subject();
-
+    this.notifier = notifierService;
   }
 
   private initializeRegisterErrors(): void {
@@ -94,6 +101,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    const registerDto = this.registerForm.getRawValue();
+
+    this.rest.register(registerDto).subscribe(response => {
+      if (ResponseCode.isSuccessResponse(response.code)) {
+        this.showErrorNotice();
+        return;
+      }
+
+      this.router.navigate(['/login']).then();
+    }, error => {
+      this.showErrorNotice();
+    });
+
+  }
+
+  private showErrorNotice(): void {
+    this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
   }
 
   private addCollapseActiveClassWithout(): void {
