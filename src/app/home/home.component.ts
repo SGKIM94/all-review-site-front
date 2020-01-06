@@ -93,14 +93,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.setRouterToken();
     this.showLoginNotification();
 
-    // this.router
-    //     .queryParamMap
-    //     .pipe(
-    //         tap(params => console.log(' params : ' + JSON.stringify(params, null, 4))),
-    //         filter(params => params.get('fragment') === 'login'),
-    //         tap(() => this.showLoginNotification())
-    //     );
-
     this.unsubscribeAll = new Subject();
   }
 
@@ -108,14 +100,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('init');
     this.notifier.notify('error', '로그인에 성공하였습니다.');
 
     this.setFuseConfig();
   }
 
   private showLoginNotification(): void {
-    console.log('in');
     this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
     this.notifier.notify('success', '로그인에 성공하였습니다.');
   }
