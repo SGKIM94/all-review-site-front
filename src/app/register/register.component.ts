@@ -109,7 +109,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.router.navigate(['/login']).then();
+      const navigationExtra = {
+        queryParams: {
+          'fragment': 'register'
+        }
+      };
+
+      this.router.navigate(['/login'], navigationExtra).then();
     }, error => {
       this.showErrorNotice();
     });
