@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {RestService} from '../rest-config/login/login.service';
 import {fuseAnimations} from '@fuse/animations/index';
 import {FuseConfigService} from '../../@fuse/services/config.service';
@@ -115,6 +115,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const fragment = this.router
+        .queryParamMap
+        .pipe(map(params => params.get('fragment') || 'None'));
     this.notifier.notify('success', '로그인에 성공하였습니다.');
 
 
