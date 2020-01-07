@@ -160,8 +160,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private openMenu(): void {
-    console.log(' this.document.body.classList ' + this.document.body.classList);
-    console.log(' type : ' + typeof this.document.body.classList);
     this.document.body.classList.add('noScroll');
 
     this.addCollapseActiveClassWithout();
@@ -177,9 +175,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private haveActiveClass(): boolean {
     return this.menuClass.includes('collapse-active');
-  }
-
-  onSubmit(): void {
-    this.notifier.notify('success', '로그인에 성공하였습니다.');
   }
 }
