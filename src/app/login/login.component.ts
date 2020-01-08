@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {RestService} from '../rest-config/login/login.service';
+import {RestService} from '../rest-config/user/user.service';
 import {fuseAnimations} from '@fuse/animations/index';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {Router} from '@angular/router';
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
   private readonly notifier: NotifierService;
+  fragment: Observable<string>;
 
   constructor(
       private fuseConfigService: FuseConfigService,
@@ -115,11 +116,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const fragment = this.router
-        .queryParamMap
-        .pipe(map(params => params.get('fragment') || 'None'));
-    this.notifier.notify('success', '로그인에 성공하였습니다.');
-
+    this.router
+        .routerState.root.fragment
+        .subscribe(frag => {
+          if (frag === 'login') {
+            this.notifier.notify('success', '로그인에 성공하였습니다.');
+          }
+        });
 
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
