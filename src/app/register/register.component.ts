@@ -104,25 +104,43 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const registerDto = this.registerForm.getRawValue();
 
     this.rest.register(registerDto).subscribe(response => {
+      if (response.code === '997') {
+        this.showDuplicateUserNotice();
+        return;
+      }
+
       if (ResponseCode.isSuccessResponse(response.code)) {
         this.showErrorNotice();
         return;
       }
 
-      const navigationExtra = {
-        fragment: 'login'
-      };
-
-      this.router.navigate(['/login'], navigationExtra).then();
+      this.routeToLogin();
     }, error => {
       this.showErrorNotice();
     });
+  }
 
+  private routeToLogin(): void {
+    this.router
+        .navigate(['/login'], this.getNavigationExtraToLogin())
+        .then();
+  }
+
+  private getNavigationExtraToLogin(): object {
+    return {
+      fragment: 'login'
+    };
   }
 
   private showErrorNotice(): void {
-    this.notifier.notify('error', '아이디나 비밀번호를 확인해주시기 바랍니다.');
+    this.notifier.notify('error', '입력하신 정보가 올바르지 않습니다.');
   }
+
+  private showDuplicateUserNotice(): void {
+    this.notifier.notify('error', '이미 존재하는 유저 아이디입니다.');
+  }
+
+
 
   private addCollapseActiveClassWithout(): void {
     if (this.haveActiveClass()) {
