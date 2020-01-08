@@ -116,13 +116,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.router
-        .routerState.root.fragment
-        .subscribe(frag => {
-          if (frag === 'login') {
-            this.notifier.notify('success', '로그인에 성공하였습니다.');
-          }
-        });
+    this.ifLoginFragmentShowNotification();
 
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -135,6 +129,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         )
         .subscribe(() => {
           this.onLoginFormValuesChanged();
+        });
+  }
+
+  private ifLoginFragmentShowNotification() {
+    this.router
+        .routerState.root.fragment
+        .subscribe(frag => {
+          if (frag === 'login') {
+            this.notifier.notify('success', '로그인에 성공하였습니다.');
+          }
         });
   }
 
