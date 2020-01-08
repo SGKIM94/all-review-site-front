@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {RestService} from '../rest-config/login/login.service';
+import {RestService} from '../rest-config/user/user.service';
 import * as ResponseCode from '../rest-config/code';
 import {NotifierService} from 'angular-notifier';
 
@@ -110,9 +110,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       }
 
       const navigationExtra = {
-        queryParams: {
-          'fragment': 'register'
-        }
+        fragment: 'login'
       };
 
       this.router.navigate(['/login'], navigationExtra).then();
