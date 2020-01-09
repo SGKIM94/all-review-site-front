@@ -132,14 +132,22 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
   }
 
-  private ifLoginFragmentShowNotification() {
+  private ifLoginFragmentShowNotification(): void {
     this.router
         .routerState.root.fragment
         .subscribe(frag => {
-          if (frag === 'login') {
-            this.notifier.notify('success', '로그인에 성공하였습니다.');
+          if (this.isLoginFragment(frag)) {
+            this.showSuccessNotice('로그인에 성공하였습니다.');
           }
         });
+  }
+
+  private showSuccessNotice(message): void {
+    this.notifier.notify('error', message);
+  }
+
+  private isLoginFragment(frag): boolean {
+    return frag === 'login';
   }
 
   onLoginFormValuesChanged(): void {
