@@ -91,6 +91,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.setRouterToken();
+    const tokenValue = this.token.subscribe(
+        e => {
+          return e;
+        }
+    );
+
     this.showLoginNotification();
 
     this.unsubscribeAll = new Subject();
@@ -127,7 +133,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.token = this.router
         .queryParamMap
         .pipe(
-            map(params => params.get('token') || 'None')
+            map(params => params.get('token').toString() || 'None')
         );
   }
 
