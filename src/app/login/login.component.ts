@@ -76,11 +76,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
 
       token = response.information.token;
+      this.setTokenInLocalStorage(token);
       this.routeToHome(token);
 
     }, error => {
         this.showErrorNotice();
     });
+  }
+
+  private setTokenInLocalStorage(token: string): void {
+    window.localStorage.setItem('token', token);
   }
 
   private routeToHome(token: string): void {
