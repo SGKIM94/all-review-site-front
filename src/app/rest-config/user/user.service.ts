@@ -20,10 +20,6 @@ const httpOptions = {
 export class RestService {
     constructor(private http: HttpClient) {}
 
-    private extractData(response: Response): any {
-        return response || {};
-    }
-
     register(user): Observable<any> {
         return this.http.post(endPoint, JSON.stringify(user), httpOptions)
             .pipe (
