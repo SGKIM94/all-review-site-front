@@ -64,6 +64,7 @@ a:not(.mat-button):not(.mat-raised-button):not(.mat-icon-button):hover, a:not(.m
     font-style: normal;
 }
 body {
+    overflow: auto;
     font-family: 'Poppins', sans-serif !important;
 }
 .btn-submit {
