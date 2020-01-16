@@ -6,8 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./question.component.scss']
 })
 export class QuestionComponent implements OnInit {
+  pageRows: Array<string>;
+  boards: Array<string>;
 
-  constructor() { }
+  constructor() {
+    this.pageRows = ['10', '20', '30', '40'];
+    const firstBoard = {
+      'NO': '1',
+      'WR': ''
+    }
+  }
 
   ngOnInit(): void {
   }
