@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionComponent implements OnInit {
   pageRows: Array<string>;
-  boards: Array<string>;
+  boards: Array<Array<string>> = [];
 
   constructor() {
     this.pageRows = ['10', '20', '30', '40'];
@@ -19,7 +19,25 @@ export class QuestionComponent implements OnInit {
       '2019-01-17'
     ];
 
-    this.boards = firstBoard;
+    const secondBoard = [
+      '2',
+      'paymint',
+      'second board',
+      '2019-01-17',
+      '2019-01-17'
+    ];
+
+    const thirdBoard = [
+      '3',
+      'paymint',
+      'third board',
+      '2019-01-17',
+      '2019-01-17'
+    ];
+
+    this.boards.push(firstBoard);
+    this.boards.push(secondBoard);
+    this.boards.push(thirdBoard);
   }
 
   ngOnInit(): void {
