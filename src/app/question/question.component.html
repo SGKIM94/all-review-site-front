@@ -6,17 +6,18 @@
             </colgroup>
             <thead>
             <tr>
-                <th class="text-align-center">display</th>
+                <th class="text-align-center">NO</th>
+                <th class="text-align-center">WRITER</th>
+                <th class="text-align-center">TITLE</th>
+                <th class="text-align-center">REGISTER DATE</th>
+                <th class="text-align-center">UPDATE DATE</th>
             </tr>
             </thead>
 
             <tbody>
             <tr>
                 <td>
-                    <span>df</span>
-                </td>
-                <td>
-                    <span>df</span>
+                    <span *ngFor="let board of boards">{{board}}</span>
                 </td>
             </tr>
             </tbody>
@@ -34,9 +35,7 @@
         <div class="line_paging">
             페이지 줄 수
             <select class="paging_select" id="rows">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+                <option *ngFor="let row of pageRows">{{row}}</option>
             </select>
         </div>
     </div>
