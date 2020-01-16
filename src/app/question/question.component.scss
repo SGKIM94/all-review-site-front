@@ -1,6 +1,7 @@
 table{
   width: 100%;
 }
+
 .table_wrapper{
   overflow-x: auto;
 }
@@ -85,6 +86,28 @@ table{
   background-position: center center;
 }
 
+.write_button_wrapper{
+  width: 100%;
+  display: flex;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: #999999;
+  padding: 40px 0 10px;
+}
+
+.write_button{
+  width: 60px;
+  height: 32px;
+  border-radius: 8px;
+  border:1px solid #dddddd;
+  margin-left: auto;
+  color: #999999;
+  background-image: linear-gradient(180deg,transparent 40%,#DDA0DD 0);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  text-decoration: none;
+}
 
 .paging_pre{
   width: 32px;
@@ -265,7 +288,7 @@ table{
 
 .contents{
   background-color: #fff;
-  padding:40px 40px 0 40px;
+  padding:0px 40px 0 40px;
 }
 
 .padding_bt_20{
