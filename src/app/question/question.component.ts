@@ -11,10 +11,15 @@ export class QuestionComponent implements OnInit {
 
   constructor() {
     this.pageRows = ['10', '20', '30', '40'];
-    const firstBoard = {
-      'NO': '1',
-      'WR': ''
-    }
+    const firstBoard = [
+      '1',
+      'paymint',
+      'first board',
+      '2019-01-17',
+      '2019-01-17'
+    ];
+
+    this.boards = firstBoard;
   }
 
   ngOnInit(): void {
