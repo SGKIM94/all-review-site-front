@@ -1,40 +1,55 @@
-<div id="ledger-list-view">
-    <div class="table_wrapper max_width">
-        <table id="table_billing">
-            <colgroup>
-                <col>
-            </colgroup>
-            <thead>
-            <tr>
-                <th class="text-align-center">NO</th>
-                <th class="text-align-center">WRITER</th>
-                <th class="text-align-center">TITLE</th>
-                <th class="text-align-center">REGISTER DATE</th>
-                <th class="text-align-center">UPDATE DATE</th>
-            </tr>
-            </thead>
+<div class="wrapper">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <ul class="navbar-nav">
+            <li class="lnb">
+                <a class="nav-link" [routerLink]="['/register']">Register</a>
+            </li>
+            <li class="lnb">
+                <a class="nav-link" [routerLink]="['/login']">login</a>
+            </li>
+        </ul>
+    </nav>
+        <div class="contents padding_bt_20" style="min-width:998px">
+            <div>
+                <div class="table_wrapper max_width">
+                    <table id="table_billing">
+                        <colgroup>
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="text-align-center">NO</th>
+                            <th class="text-align-center">WRITER</th>
+                            <th class="text-align-center">TITLE</th>
+                            <th class="text-align-center">REGISTER DATE</th>
+                            <th class="text-align-center">UPDATE DATE</th>
+                        </tr>
+                        </thead>
 
-            <tbody>
-            <tr>
-                <td class="text-align-center" *ngFor="let board of boards">{{board}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                        <tbody>
+                        <tr *ngFor="let board of boards">
+                            <td class="text-align-center" *ngFor="let data of board">{{data}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <div class="paging_wrapper max_width">
-        <div class="btngroup_paging">
-            <div class="paging_pre"><span class="icon_paging_pre"></span></div>
-            <div class="paging_next"><span class="icon_paging_next"></span></div>
+                <div class="paging_wrapper max_width">
+                    <div class="btngroup_paging">
+                        <div class="paging_pre"><span class="icon_paging_pre"></span></div>
+                        <div class="paging_next"><span class="icon_paging_next"></span></div>
+                    </div>
+                    <div class="inputgroup_paging">
+                        페이지 : <input class="paging_intput">
+                    </div>
+                    <div class="line_paging">
+                        페이지 줄 수
+                        <select class="paging_select" id="rows">
+                            <option *ngFor="let row of pageRows">{{row}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="inputgroup_paging">
-            페이지 : <input class="paging_intput">
-        </div>
-        <div class="line_paging">
-            페이지 줄 수
-            <select class="paging_select" id="rows">
-                <option *ngFor="let row of pageRows">{{row}}</option>
-            </select>
-        </div>
-    </div>
+<!--    </div>-->
 </div>
