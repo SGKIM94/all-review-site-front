@@ -7,9 +7,7 @@ const endPoint = 'http://localhost:5000/api/users/';
 
 const httpOptions = {
     headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Access-Control-Allow-Credentials' : 'true',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+        'Content-Type':  'application/json'
     })
 };
 
