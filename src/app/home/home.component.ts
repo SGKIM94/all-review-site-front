@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   menuClass = ['collapse', 'collapse-active'];
   private unsubscribeAll: Subject<any>;
   private readonly notifier: NotifierService;
-  private token: Observable<string>;
+  private token: string;
 
   constructor(@Inject(DOCUMENT) private document: any,
               private fuseConfigService: FuseConfigService,
@@ -85,18 +85,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationTurkish);
     this.translateService.use('en');
 
-
     if (this.platform.ANDROID || this.platform.IOS) {
       this.document.body.classList.add('is-mobile');
     }
 
     this.setRouterToken();
-    const tokenValue = this.token.subscribe(
-        e => {
-          return e;
-        }
-    );
-
     this.showLoginNotification();
 
     this.unsubscribeAll = new Subject();
@@ -130,11 +123,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private setRouterToken(): void {
-    this.token = this.router
+    this.router
         .queryParamMap
         .pipe(
             map(params => params.get('token').toString() || 'None')
-        );
+        ).subscribe(token => this.token = token);
   }
 
   removeClassListWhenContainTheme(): void {
@@ -181,5 +174,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private haveActiveClass(): boolean {
     return this.menuClass.includes('collapse-active');
+  }
+
+  private haveNotToken(): boolean {
+    return !this.token;
+  }
+
+  private haveToken(): boolean {
+    return !this.haveNotToken();
   }
 }
