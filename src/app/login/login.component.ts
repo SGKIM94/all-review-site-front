@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    const loginDto = this.loginForm.getRawValue();
+      const loginDto = this.loginForm.getRawValue();
     let token = '';
 
     this.rest.login(loginDto).subscribe(response => {
@@ -76,6 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
 
       token = response.information.token;
+
       this.setTokenInLocalStorage(token);
       this.routeToHome(token);
 
@@ -98,8 +99,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     return {
       queryParams: {
         'token': token,
-        'fragment': 'login'
-      }
+      },
+
+      fragment: 'login'
     };
   }
 
