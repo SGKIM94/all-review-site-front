@@ -54,12 +54,7 @@ export class QuestionComponent implements OnInit {
   }
 
   findAll(): void {
-    const pageable = {
-      'page': '0',
-      'size': '10'
-    };
-
-    this.rest.list(pageable).subscribe(response => {
+    this.rest.list().subscribe(response => {
       if (ResponseCode.isSuccessResponse(response.code)) {
         this.showErrorNotice();
         return;
