@@ -5,9 +5,13 @@ import {catchError} from 'rxjs/operators';
 
 const endPoint = 'http://localhost:5000/questions/list';
 
+// const token = window.localStorage.getItem('token');
+const token = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ0a2Rybjg1NzgiLCJpYXQiOjE1NzkzNDE3MDh9.JF3oXC1msDCVAyNxzKvGDmrwCjhxhxvqkRyuxYZ3ndg';
+
 const httpOptions = {
     headers: new HttpHeaders({
-        'Content-Type':  'application/json'
+        'Content-Type':  'application/json',
+        'Authorization': token
     })
 };
 
@@ -18,10 +22,10 @@ const httpOptions = {
 export class RestService {
     constructor(private http: HttpClient) {}
 
-    list(user): Observable<any> {
-        return this.http.post(endPoint, JSON.stringify(user), httpOptions)
+    list(): Observable<any> {
+        return this.http.get(endPoint, httpOptions)
             .pipe (
-                catchError(this.handleError<any>('login'))
+                catchError(this.handleError<any>('question list'))
             );
     }
 
