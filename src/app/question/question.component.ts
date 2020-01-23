@@ -12,7 +12,7 @@ import {NotifierService} from 'angular-notifier';
 })
 export class QuestionComponent implements OnInit {
   pageRows: Array<string>;
-  boards: Array<Array<string>> = [];
+  boards: Array<JSON> = [];
   private readonly notifier: NotifierService;
 
 
@@ -24,13 +24,12 @@ export class QuestionComponent implements OnInit {
 
     this.findAll();
     this.pageRows = ['10', '20', '30', '40'];
-    const firstBoard = [
-      '1',
-      'paymint',
-      'first board',
-      '2019-01-17',
-      '2019-01-17'
-    ];
+    const firstBoard = {
+        'id' : '1',
+        'writer_id' : 'paymint',
+        'title' : 'first board',
+        'create_at' : '2019-01-17',
+      };
 
     const secondBoard = [
       '2',
@@ -60,11 +59,20 @@ export class QuestionComponent implements OnInit {
         return;
       }
 
-      console.log(' response : ' + JSON.stringify(response, null, 4));
+      console.log(' response : ' + JSON.stringify(response.information.questions, null, 4));
+      this.boards = JSON.parse(response.information.questions);
 
     }, error => {
       this.showErrorNotice();
     });
+
+    this.boards.map((board) => {
+      Object.entries(board).forEach(([key, value]) => {
+        const control = board.get(key);
+        this.checkFieldError(control, key);
+      });
+    });
+
   }
 
   private showErrorNotice(): void {
