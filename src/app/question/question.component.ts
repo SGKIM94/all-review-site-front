@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {RestService} from '../rest-config/question/question.service';
+import {Question, Questions, RestService} from '../rest-config/question/question.service';
 import * as ResponseCode from '../rest-config/code';
 import {NotifierService} from 'angular-notifier';
 
@@ -12,7 +12,7 @@ import {NotifierService} from 'angular-notifier';
 })
 export class QuestionComponent implements OnInit {
   pageRows: Array<string>;
-  boards: Array<JSON> = [];
+  boards: Array<Question>;
   private readonly notifier: NotifierService;
 
 
@@ -24,32 +24,6 @@ export class QuestionComponent implements OnInit {
 
     this.findAll();
     this.pageRows = ['10', '20', '30', '40'];
-    const firstBoard = {
-        'id' : '1',
-        'writer_id' : 'paymint',
-        'title' : 'first board',
-        'create_at' : '2019-01-17',
-      };
-
-    const secondBoard = [
-      '2',
-      'paymint',
-      'second board',
-      '2019-01-17',
-      '2019-01-17'
-    ];
-
-    const thirdBoard = [
-      '3',
-      'paymint',
-      'third board',
-      '2019-01-17',
-      '2019-01-17'
-    ];
-
-    this.boards.push(firstBoard);
-    this.boards.push(secondBoard);
-    this.boards.push(thirdBoard);
   }
 
   findAll(): void {
@@ -59,18 +33,10 @@ export class QuestionComponent implements OnInit {
         return;
       }
 
-      console.log(' response : ' + JSON.stringify(response.information.questions, null, 4));
-      this.boards = JSON.parse(response.information.questions);
+      this.boards = response.information.questions;
 
     }, error => {
       this.showErrorNotice();
-    });
-
-    this.boards.map((board) => {
-      Object.entries(board).forEach(([key, value]) => {
-        const control = board.get(key);
-        this.checkFieldError(control, key);
-      });
     });
 
   }
