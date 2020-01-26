@@ -33,7 +33,11 @@
 
                         <tbody>
                         <tr *ngFor="let board of boards">
-                            <td class="text-align-center" *ngFor="let data of board">{{data}}</td>
+                            <td class="text-align-center">{{board.id}}</td>
+                            <td class="text-align-center">{{board.title}}</td>
+                            <td class="text-align-center">{{board.id}}</td>
+                            <td class="text-align-center">{{board.title}}</td>
+
                         </tr>
                         </tbody>
                     </table>
