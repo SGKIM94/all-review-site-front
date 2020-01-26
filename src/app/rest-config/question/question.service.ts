@@ -15,6 +15,40 @@ const httpOptions = {
     })
 };
 
+export class ResponseService {
+    code: string;
+    message: string;
+    information: Questions;
+
+    constructor(response) {
+        this.code = response.code;
+        this.message = response.message;
+        this.information = response.information;
+    }
+}
+
+export class Questions {
+    questions: Array<Question>;
+
+    constructor(questions: Array<Question>) {
+        this.questions = questions;
+    }
+}
+
+export class Question {
+    id: string;
+    title: string;
+    contents: string;
+    deleted: boolean;
+
+    constructor(question) {
+        this.id = question.id;
+        this.title = question.title;
+        this.contents = question.content;
+        this.deleted = question.deleted;
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -22,7 +56,7 @@ const httpOptions = {
 export class RestService {
     constructor(private http: HttpClient) {}
 
-    list(): Observable<any> {
+    list(): Observable<ResponseService> {
         return this.http.get(endPoint, httpOptions)
             .pipe (
                 catchError(this.handleError<any>('question list'))
