@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {User} from '../user/user.service';
 
 const endPoint = 'http://localhost:5000/questions/list';
 
@@ -40,12 +41,14 @@ export class Question {
     title: string;
     contents: string;
     deleted: boolean;
+    writer: User;
 
     constructor(question) {
         this.id = question.id;
         this.title = question.title;
         this.contents = question.content;
         this.deleted = question.deleted;
+        this.writer = question.wrtier;
     }
 }
 
