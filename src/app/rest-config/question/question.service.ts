@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {User} from '../user/user.service';
 
-const endPoint = 'http://localhost:5000/questions/list';
+const endPoint = 'http://localhost:5000/api/questions/list';
 
 // const token = window.localStorage.getItem('token');
 const token = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ0a2Rybjg1NzgiLCJpYXQiOjE1NzkzNDE3MDh9.JF3oXC1msDCVAyNxzKvGDmrwCjhxhxvqkRyuxYZ3ndg';
