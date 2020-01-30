@@ -13,10 +13,6 @@ const httpOptions = {
     })
 };
 
-@Injectable({
-    providedIn: 'root'
-})
-
 export class User {
     userId: string;
     password: string;
@@ -30,6 +26,10 @@ export class User {
         this.email = user.email;
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
 
 export class RestService {
     constructor(private http: HttpClient) {}
