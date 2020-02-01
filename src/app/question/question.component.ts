@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Question, Questions, RestService} from '../rest-config/question/question.service';
+import {Question, Questions, QuestionRestService} from '../rest-config/question/question.service';
 import * as ResponseCode from '../rest-config/code';
 import {NotifierService} from 'angular-notifier';
 
@@ -17,7 +17,7 @@ export class QuestionComponent implements OnInit {
 
 
   constructor(
-      private rest: RestService,
+      private rest: QuestionRestService,
       private notifierService: NotifierService,
   ) {
     this.notifier = notifierService;
@@ -32,6 +32,9 @@ export class QuestionComponent implements OnInit {
         this.showErrorNotice();
         return;
       }
+
+      console.log(' response : ' + JSON.stringify(response, null, 4));
+      console.log(' response.information : ' + JSON.stringify(response.information, null, 4));
 
       this.boards = response.information.questions;
 
