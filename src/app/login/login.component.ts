@@ -2,12 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {RestService} from '../rest-config/user/user.service';
+import {UserRestService} from '../rest-config/user/user.service';
 import {fuseAnimations} from '@fuse/animations/index';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {Router} from '@angular/router';
 import {NotifierService} from 'angular-notifier';
 import * as ResponseCode from '../rest-config/code';
+import {RestService} from '../rest-config/rest.service';
 
 @Component({
   selector: 'app-login',
@@ -27,9 +28,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
       private fuseConfigService: FuseConfigService,
       private formBuilder: FormBuilder,
-      private rest: RestService,
+      private userRest: UserRestService,
       private router: Router,
-      private notifierService: NotifierService) {
+      private notifierService: NotifierService,
+      private rest: RestService) {
 
     this.openMenu();
     this.setFuseConfig();
@@ -66,41 +68,31 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-      const loginDto = this.loginForm.getRawValue();
-    let token = '';
+    const loginDto = this.loginForm.getRawValue();
 
-    this.rest.login(loginDto).subscribe(response => {
+    this.userRest.login(loginDto).subscribe(response => {
       if (ResponseCode.isSuccessResponse(response.code)) {
           this.showErrorNotice();
           return;
       }
 
-      token = response.information.token;
+      this.rest.setTokenInHttpHeader(response.information.token);
 
-      this.setTokenInLocalStorage(token);
-      this.routeToHome(token);
+      this.routeToHome();
 
     }, error => {
         this.showErrorNotice();
     });
   }
 
-  private setTokenInLocalStorage(token: string): void {
-    window.localStorage.setItem('token', token);
-  }
-
-  private routeToHome(token: string): void {
+  private routeToHome(): void {
     this.router
-        .navigate(['/home'], this.getNavigationExtrasToHome(token))
+        .navigate(['/home'], this.getNavigationExtrasToHome())
         .then();
   }
 
-  private getNavigationExtrasToHome(token: string): object {
+  private getNavigationExtrasToHome(): object {
     return {
-      queryParams: {
-        'token': token,
-      },
-
       fragment: 'login'
     };
   }
