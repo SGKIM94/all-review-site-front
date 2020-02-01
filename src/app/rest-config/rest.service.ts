@@ -8,17 +8,24 @@ import {HttpHeaders} from '@angular/common/http';
 
 export class RestService {
   headers: HttpHeaders;
+  contentType: string;
+  token: string;
 
-  constructor() { }
-
-  setTokenInHttpHeader(token): void {
-    this.headers = new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': token
-    });
+  constructor() {
+    this.contentType = 'application/json';
+    this.token = '';
   }
 
-  getHttpHeader(): HttpHeaders {
-    return this.headers;
+  setTokenInHttpHeader(token): void {
+    this.token = token;
+  }
+
+  getHttpHeader(): Object {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': this.contentType,
+        'Authorization': this.token,
+      })
+    };
   }
 }
