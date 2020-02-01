@@ -1,18 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, Observer, of} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {Observable, of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 import {RestService} from '../rest.service';
-import {Questions} from '../question/question.service';
 
 const endPoint = 'http://localhost:5000/api/users/';
-
-const httpOptions = {
-    headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': '',
-    })
-};
 
 export class User {
     userId: string;
@@ -43,7 +35,6 @@ export class UserRestService {
                 catchError(this.handleError<any>('login'))
             );
     }
-
 
     login(user): Observable<any> {
         return this.http.post(endPoint + 'login/', JSON.stringify(user), this.rest.getHttpHeader())
