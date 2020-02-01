@@ -3,18 +3,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {User} from '../user/user.service';
+import {RestService} from '../rest.service';
 
 const endPoint = 'http://localhost:5000/api/questions/list';
 
 // const token = window.localStorage.getItem('token');
-const token = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ0a2Rybjg1NzgiLCJpYXQiOjE1NzkzNDE3MDh9.JF3oXC1msDCVAyNxzKvGDmrwCjhxhxvqkRyuxYZ3ndg';
+const token = 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ0a2Rybjg1NzgiLCJ1c2VySWQiOiJ0a2Rybjg1NzgiLCJpYXQiOjE1ODAzODg0ODB9.zcwqoOgxo4DI3rMBSi9j5aA1nY72iviT3VyY34dCtMo';
 
-const httpOptions = {
-    headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': token
-    })
-};
 
 export class ResponseService {
     code: string;
@@ -56,11 +51,14 @@ export class Question {
     providedIn: 'root'
 })
 
-export class RestService {
-    constructor(private http: HttpClient) {}
+export class QuestionRestService {
+    constructor(
+        private http: HttpClient,
+        private rest: RestService) {
+    }
 
     list(): Observable<ResponseService> {
-        return this.http.get(endPoint, httpOptions)
+        return this.http.get(endPoint, this.rest.getHttpHeader())
             .pipe (
                 catchError(this.handleError<any>('question list'))
             );
