@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 import {FuseConfigService} from '../../@fuse/services/config.service';
 import {takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {RestService} from '../rest-config/user/user.service';
+import {UserRestService} from '../rest-config/user/user.service';
 import * as ResponseCode from '../rest-config/code';
 import {NotifierService} from 'angular-notifier';
 
@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
       private fuseConfigService: FuseConfigService,
       private formBuilder: FormBuilder,
-      private rest: RestService,
+      private rest: UserRestService,
       private router: Router,
       private notifierService: NotifierService) {
 
