@@ -1,6 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {config, interval, Observable, Subject} from 'rxjs';
-import {filter, map, takeUntil, tap} from 'rxjs/operators';
+import {interval, Subject} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
 import {IImage} from 'ng-simple-slideshow';
 import {DOCUMENT} from '@angular/common';
 import {FuseConfigService} from '../../@fuse/services/config.service';
@@ -89,7 +89,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.document.body.classList.add('is-mobile');
     }
 
-    this.setRouterToken();
     this.showLoginNotification();
 
     this.unsubscribeAll = new Subject();
@@ -120,14 +119,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.document.body.classList.add(this.fuseConfig.colorTheme);
         });
-  }
-
-  private setRouterToken(): void {
-    this.router
-        .queryParamMap
-        .pipe(
-            map(params => params.get('token').toString() || 'None')
-        ).subscribe(token => this.token = token);
   }
 
   removeClassListWhenContainTheme(): void {
@@ -174,13 +165,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private haveActiveClass(): boolean {
     return this.menuClass.includes('collapse-active');
-  }
-
-  private haveNotToken(): boolean {
-    return !this.token;
-  }
-
-  private haveToken(): boolean {
-    return !this.haveNotToken();
   }
 }
