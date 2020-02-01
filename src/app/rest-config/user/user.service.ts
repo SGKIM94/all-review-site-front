@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Observer, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
+import {RestService} from '../rest.service';
 import {Questions} from '../question/question.service';
 
 const endPoint = 'http://localhost:5000/api/users/';
@@ -31,11 +32,13 @@ export class User {
     providedIn: 'root'
 })
 
-export class RestService {
-    constructor(private http: HttpClient) {}
+export class UserRestService {
+    constructor(
+        private http: HttpClient,
+        private rest: RestService) {}
 
     register(user): Observable<any> {
-        return this.http.post(endPoint, JSON.stringify(user), httpOptions)
+        return this.http.post(endPoint, JSON.stringify(user), this.rest.getHttpHeader())
             .pipe (
                 catchError(this.handleError<any>('login'))
             );
@@ -43,7 +46,7 @@ export class RestService {
 
 
     login(user): Observable<any> {
-        return this.http.post(endPoint + 'login/', JSON.stringify(user), httpOptions)
+        return this.http.post(endPoint + 'login/', JSON.stringify(user), this.rest.getHttpHeader())
             .pipe (
             catchError(this.handleError<any>('login'))
         );
