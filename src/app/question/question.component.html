@@ -34,9 +34,10 @@
                         <tbody>
                         <tr *ngFor="let board of boards">
                             <td class="text-align-center">{{board.id}}</td>
+                            <td class="text-align-center">{{board.writer.userId}}</td>
                             <td class="text-align-center">{{board.title}}</td>
-                            <td class="text-align-center">{{board.id}}</td>
-                            <td class="text-align-center">{{board.title}}</td>
+                            <td class="text-align-center">{{board.createAt}}</td>
+                            <td class="text-align-center">{{board.updateAt}}</td>
 
                         </tr>
                         </tbody>
