@@ -30,9 +30,9 @@ export class UserRestService {
         private rest: RestService) {}
 
     register(user): Observable<any> {
-        return this.http.post(endPoint, JSON.stringify(user), this.rest.getHttpHeader())
+        return this.http.post(endPoint + 'register/', JSON.stringify(user), this.rest.getHttpHeader())
             .pipe (
-                catchError(this.handleError<any>('login'))
+                catchError(this.handleError<any>('register'))
             );
     }
 
