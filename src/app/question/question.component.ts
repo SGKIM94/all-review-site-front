@@ -33,15 +33,11 @@ export class QuestionComponent implements OnInit {
         return;
       }
 
-      console.log(' response : ' + JSON.stringify(response, null, 4));
-      console.log(' response.information : ' + JSON.stringify(response.information, null, 4));
-
       this.boards = response.information.questions;
 
     }, error => {
       this.showErrorNotice();
     });
-
   }
 
   private showErrorNotice(): void {
