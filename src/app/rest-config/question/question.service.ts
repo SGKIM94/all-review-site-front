@@ -58,6 +58,7 @@ export class QuestionRestService {
     }
 
     list(): Observable<ResponseService> {
+        this.rest.setTokenInHttpHeader(token);
         return this.http.get(endPoint, this.rest.getHttpHeader())
             .pipe (
                 catchError(this.handleError<any>('question list'))
